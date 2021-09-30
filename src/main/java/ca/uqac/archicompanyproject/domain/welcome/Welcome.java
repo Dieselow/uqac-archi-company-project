@@ -1,4 +1,4 @@
-package ca.uqac.archicompanyproject.welcome.model;
+package ca.uqac.archicompanyproject.domain.welcome;
 
 import lombok.Builder;
 import lombok.Data;

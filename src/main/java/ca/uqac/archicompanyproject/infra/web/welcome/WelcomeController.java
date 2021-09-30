@@ -1,6 +1,6 @@
-package ca.uqac.archicompanyproject.welcome.controller;
+package ca.uqac.archicompanyproject.infra.web.welcome;
 
-import ca.uqac.archicompanyproject.welcome.model.Welcome;
+import ca.uqac.archicompanyproject.domain.welcome.Welcome;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
