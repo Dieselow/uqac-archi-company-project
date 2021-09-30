@@ -4,3 +4,9 @@ https://springframework.guru/configuring-spring-boot-for-mariadb/
 
 # Up the project
 ````docker-compose up -d````
+
+## DB
+`` create db: make create-db``
+``fill db: make fill-db``
+
+Attention: faut voir le conteneur de bdd lancé via docker
