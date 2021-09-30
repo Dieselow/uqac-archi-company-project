@@ -20,6 +20,11 @@ services:
       # Where our data will be persisted
     volumes:
       - my-db:/var/lib/mysql
+    networks:
+      - common-network
 # Names our volume
 volumes:
   my-db:
+networks:
+  common-network:
+    driver: bridge
