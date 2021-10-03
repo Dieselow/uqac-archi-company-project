@@ -1,6 +1,5 @@
 package ca.uqac.archicompanyproject.domain.caregiver;
 
-import ca.uqac.archicompanyproject.domain.secretary.Secretary;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

@@ -2,7 +2,6 @@ package ca.uqac.archicompanyproject.domain.users;
 
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;

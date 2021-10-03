@@ -1,13 +1,11 @@
 package ca.uqac.archicompanyproject.domain.patient;
 
 import ca.uqac.archicompanyproject.domain.authentication.Role;
-import ca.uqac.archicompanyproject.domain.employees.Employee;
 import ca.uqac.archicompanyproject.domain.users.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import java.util.Date;

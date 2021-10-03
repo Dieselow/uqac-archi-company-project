@@ -5,7 +5,6 @@ import ca.uqac.archicompanyproject.domain.users.UserServiceImpl;
 import ca.uqac.archicompanyproject.infra.dto.authentication.LoginDTO;
 import ca.uqac.archicompanyproject.infra.dto.authentication.LoginReponseDTO;
 import ca.uqac.archicompanyproject.security.TokenProvider;
-import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 @RestController
 @RequestMapping("/auth")

@@ -2,13 +2,16 @@ package ca.uqac.archicompanyproject.domain.employees;
 
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.users.User;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Type;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.PrimaryKeyJoinColumn;
 import java.util.Date;
 
+@Entity
 @Data
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
