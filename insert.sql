@@ -23,13 +23,7 @@
 # Dump of table user_rights
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `user_rights`;
 
-CREATE TABLE `user_rights` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 LOCK TABLES `user_rights` WRITE;
 /*!40000 ALTER TABLE `user_rights` DISABLE KEYS */;
@@ -45,6 +39,13 @@ VALUES
 UNLOCK TABLES;
 
 
+ -- INSERT MEDECIN
+INSERT INTO `user`  VALUES(1, 'DDupont', '123456', 'David', 'Dupont', '2000-06-02', 'david.dupont@gmail.com', '7 rue des Corneliens 60200 Compiegne', '+33770471615', 5000, 'Mercredi 10-20H' ,'2019-08-01', 'AB544885', 3, 2);
+INSERT INTO `user`  VALUES(2, 'JDoe', '123456', 'John', 'Doe', '2000-08-09', 'john.doe@gmail.com', '8 rue des Chicoutiméens', '+1 418 514 7788', 80000, 'Mercredi 10-20H' ,'2011-08-01', 'AB544886', 3, 2);
+
+ -- INSERT SECRETARY
+INSERT INTO `user`  VALUES(3, 'JDoe', '123456', 'John', 'Secretary', '2000-08-09', 'john.doe@gmail.com', '8 rue des Chicoutiméens', '+1 418 514 7788', 80000, 'Mercredi 10-20H' ,'2011-08-01', 'AB544886', 2, 1);
+INSERT INTO `user`  VALUES(4, 'JDoe', '123456', 'Paul', 'Secretary', '2000-08-09', 'john.doe@gmail.com', '8 rue des Chicoutiméens', '+1 418 514 7788', 80000, 'Mercredi 10-20H' ,'2011-08-01', 'AB544886', 2, 1);
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
