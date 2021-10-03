@@ -13,7 +13,6 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-//@DiscriminatorValue("2")
 @PrimaryKeyJoinColumn(name = "caregiver_id")
 public class Caregiver extends Employee {
 

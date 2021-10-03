@@ -11,7 +11,8 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@MappedSuperclass
+@Inheritance(strategy = InheritanceType.JOINED)
+@PrimaryKeyJoinColumn(name = "employee_id")
 public class Employee extends User {
 
     private float salary;
