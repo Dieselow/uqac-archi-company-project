@@ -47,12 +47,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> insertUser(@RequestBody User user) {
+    public ResponseEntity<String> insertUser(@RequestBody User user) {
         User _userExist = null;
         _userExist = userService.findUserByEmail(user.getEmail());
         if (_userExist == null) {
             User _user = userService.addUser(user);
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
+            return new ResponseEntity<>(user.toString(), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
