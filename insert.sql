@@ -37,9 +37,10 @@ LOCK TABLES `user_rights` WRITE;
 INSERT INTO `user_rights` (`id`, `name`)
 VALUES
 	(0,'ADMIN'),
-	(1,'USER'),
+	(1,'PATIENT'),
 	(2,'SECRETARY'),
-	(3,'CAREGIVER');
+	(3,'CAREGIVER'),
+    (4,'USER');
 
 /*!40000 ALTER TABLE `user_rights` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -4,6 +4,7 @@ import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import javassist.NotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,37 +16,35 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
+
+    //Class repositories
     private final UserRepositoryInterface userRepository;
+
+    //Other
     private final RoleRepository roleRepository;
     private final PasswordEncoder bCryptEncoder;
 
-    public UserServiceImpl(UserRepositoryInterface userRepository, RoleRepository roleRepository, PasswordEncoder bCryptEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.bCryptEncoder = bCryptEncoder;
-    }
-
     @Override
     public User addUser(User user) {
-        if (user.getRole() == null) {
-            user.setRole(this.roleRepository.findByName(Roles.USER.toString()));
+        if (user.getRoles() == null) {
+            Set<Role> userRoles = new HashSet<>();
+            userRoles.add( this.roleRepository.findByName(Roles.USER.toString()));
+            user.setRoles(userRoles);
         }
 
         return this.userRepository.save(
-                User.builder()
+                User.userBuilder()
                         .firstName(user.getFirstName())
                         .lastName(user.getLastName())
                         .email(user.getEmail())
                         .phoneNumber(user.getPhoneNumber())
                         .address(user.getAddress())
                         .username(user.getUsername())
-                        .licenceNumber(user.getLicenceNumber())
                         .password(bCryptEncoder.encode(user.getPassword()))
-                        .role(user.getRole())
+                        .roles(user.getRoles())
                         .dateOfBirth(user.getDateOfBirth())
-                        .salary(user.getSalary())
-                        .workSchedule(user.getWorkSchedule())
                         .build()
         );
 
@@ -74,18 +73,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByEmail(email);
         if(user.isPresent()) {
-            return buildUserForAuthentication(user.get(),getUserAuthority(user.get().getRole()));
+            return buildUserForAuthentication(user.get(),getAuthority(user.get()));
         }
         throw new UsernameNotFoundException("User with email " + email + "not found");
     }
 
-    private List<GrantedAuthority> getUserAuthority(Role userRole) {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        roles.add((new SimpleGrantedAuthority(userRole.getName())));
-        return new ArrayList<>(roles);
+    private Set<SimpleGrantedAuthority> getAuthority(User user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        });
+        return authorities;
     }
 
-    private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
+    private UserDetails buildUserForAuthentication(User user, Set<SimpleGrantedAuthority> authorities) {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 }

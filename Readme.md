@@ -10,3 +10,5 @@ https://springframework.guru/configuring-spring-boot-for-mariadb/
 ``fill db: make fill-db``
 
 Attention: faut voir le conteneur de bdd lancé via docker
+
+Base url: http://localhost:3001/api/v1
