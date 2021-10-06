@@ -15,7 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "patient_id")
 public class Patient extends User {
-
     @Builder
     public Patient(Integer ID, String username, String firstName, String lastName, Date dateOfBirth, String email, String password, String address, String phoneNumber, Role role){
         super(ID, username, firstName, lastName, dateOfBirth, email, password, address, phoneNumber, role);

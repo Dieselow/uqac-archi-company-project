@@ -19,12 +19,14 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient savePatient(Patient patient) {
-        //Doit juste faire attention a ne pas réencoder un password
-        if (patient.getID() == null){
-            patient.setPassword(bCryptEncoder.encode(patient.getPassword()));
-            patient.setRole(this.roleRepository.findByName(Roles.USER.toString()));
-        }
         return patientRepository.save(patient);
+    }
+
+    @Override
+    public Patient addPatient(Patient patient) {
+        patient.setRole(this.roleRepository.findByName(Roles.PATIENT.toString()));
+        patient.setPassword(bCryptEncoder.encode(patient.getPassword()));
+        return this.patientRepository.save(patient);
     }
 
     @Override

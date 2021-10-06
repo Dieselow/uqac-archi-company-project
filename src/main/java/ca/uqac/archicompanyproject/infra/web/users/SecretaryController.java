@@ -1,8 +1,8 @@
 package ca.uqac.archicompanyproject.infra.web.users;
 
-import ca.uqac.archicompanyproject.domain.patient.Patient;
 import ca.uqac.archicompanyproject.domain.secretary.Secretary;
 import ca.uqac.archicompanyproject.domain.secretary.SecretaryService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,19 +27,24 @@ public class SecretaryController {
         }
     }
 
-    @GetMapping("/new")
+    @PostMapping("/auth/register")
     public ResponseEntity<String> createNewSecretary(@RequestBody Secretary secretary) {
         try {
-            secretaryService.saveSecretary(secretary);
-            return new ResponseEntity<>("Success", HttpStatus.OK);
-        } catch (Exception e) {
+            this.secretaryService.findSecretaryByEmail(secretary.getEmail());
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }catch (NotFoundException exception){
+            secretaryService.addSecretary(secretary);
+            return new ResponseEntity<>("Success", HttpStatus.CREATED);
+        }
+        catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/update/:id")
-    public ResponseEntity<String> updateSecretary(@RequestBody Secretary secretary) {
+    @PutMapping("/update/:id")
+    public ResponseEntity<String> updateSecretary(@RequestParam("id") Integer id,@RequestBody Secretary secretary) {
         try {
+            secretary.setID(id);
             secretaryService.saveSecretary(secretary);
             return new ResponseEntity<>("Success", HttpStatus.OK);
         } catch (Exception e) {

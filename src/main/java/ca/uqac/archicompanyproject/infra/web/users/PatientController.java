@@ -3,6 +3,7 @@ package ca.uqac.archicompanyproject.infra.web.users;
 import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
 import ca.uqac.archicompanyproject.domain.patient.Patient;
 import ca.uqac.archicompanyproject.domain.patient.PatientService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,18 +28,21 @@ public class PatientController {
         }
     }
 
-    @GetMapping("/new")
+    @PostMapping("/auth/register")
     public ResponseEntity<String> createNewPatient(@RequestBody Patient patient) {
         try {
-            patientService.savePatient(patient);
+            this.patientService.findPatientByEmail(patient.getEmail());
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        } catch (NotFoundException notFoundException) {
+            patientService.addPatient(patient);
             return new ResponseEntity<>("Success", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/update/:id")
-    public ResponseEntity<String> updatePatient(@RequestBody Patient patient) {
+    @PutMapping("/update/:id")
+    public ResponseEntity<String> updatePatient(@RequestParam("id") Integer id, @RequestBody Patient patient) {
         try {
             patientService.savePatient(patient);
             return new ResponseEntity<>("Success", HttpStatus.OK);

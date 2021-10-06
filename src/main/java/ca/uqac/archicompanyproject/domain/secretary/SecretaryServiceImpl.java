@@ -19,12 +19,14 @@ public class SecretaryServiceImpl implements  SecretaryService{
 
     @Override
     public Secretary saveSecretary(Secretary secretary) {
-        //Doit juste faire attention a ne pas réencoder un password
-        if (secretary.getID() == null){
-            secretary.setPassword(bCryptEncoder.encode(secretary.getPassword()));
-            secretary.setRole(this.roleRepository.findByName(Roles.SECRETARY.toString()));
-        }
         return secretaryRepository.save(secretary);
+    }
+
+    @Override
+    public Secretary addSecretary(Secretary secretary) {
+        secretary.setRole(this.roleRepository.findByName(Roles.SECRETARY.toString()));
+        secretary.setPassword(bCryptEncoder.encode(secretary.getPassword()));
+        return this.secretaryRepository.save(secretary);
     }
 
     @Override

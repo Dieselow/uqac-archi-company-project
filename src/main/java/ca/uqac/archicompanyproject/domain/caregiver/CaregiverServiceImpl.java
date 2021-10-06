@@ -19,12 +19,14 @@ public class CaregiverServiceImpl implements  CaregiverService{
 
     @Override
     public Caregiver saveCaregiver(Caregiver caregiver){
-        //Doit juste faire attention a ne pas réencoder un password
-        if (caregiver.getID() == null){
-            caregiver.setPassword(bCryptEncoder.encode(caregiver.getPassword()));
-            caregiver.setRole(this.roleRepository.findByName(Roles.CAREGIVER.toString()));
-        }
         return caregiverRepository.save(caregiver);
+    }
+
+    @Override
+    public Caregiver addCaregiver(Caregiver caregiver) {
+        caregiver.setRole(this.roleRepository.findByName(Roles.CAREGIVER.toString()));
+        caregiver.setPassword(bCryptEncoder.encode(caregiver.getPassword()));
+        return this.caregiverRepository.save(caregiver);
     }
 
     @Override
