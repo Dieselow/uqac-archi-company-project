@@ -1,5 +1,6 @@
 package ca.uqac.archicompanyproject.domain.caregiver;
 
+import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import javassist.NotFoundException;
@@ -7,7 +8,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +27,9 @@ public class CaregiverServiceImpl implements  CaregiverService{
 
     @Override
     public Caregiver addCaregiver(Caregiver caregiver) {
-        caregiver.setRole(this.roleRepository.findByName(Roles.CAREGIVER.toString()));
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add( this.roleRepository.findByName(Roles.CAREGIVER.name()));
+        caregiver.setRoles(userRoles);
         caregiver.setPassword(bCryptEncoder.encode(caregiver.getPassword()));
         return this.caregiverRepository.save(caregiver);
     }

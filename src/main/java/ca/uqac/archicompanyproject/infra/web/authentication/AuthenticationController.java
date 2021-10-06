@@ -38,7 +38,7 @@ public class AuthenticationController {
 
         Authentication authentication = authenticationManager.getObject().authenticate(authenticationToken);
 
-        String token = tokenProvider.createToken(authentication);
+        String token = tokenProvider.generateToken(authentication);
 
         LoginReponseDTO response = new LoginReponseDTO();
         response.setToken(token);

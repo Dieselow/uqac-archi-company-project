@@ -28,8 +28,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User addUser(User user) {
-        if (user.getRole() == null) {
-            user.setRole(this.roleRepository.findByName(Roles.USER.toString()));
+        if (user.getRoles() == null) {
+            Set<Role> userRoles = new HashSet<>();
+            userRoles.add( this.roleRepository.findByName(Roles.USER.toString()));
+            user.setRoles(userRoles);
         }
 
         return this.userRepository.save(
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                         .address(user.getAddress())
                         .username(user.getUsername())
                         .password(bCryptEncoder.encode(user.getPassword()))
-                        .role(user.getRole())
+                        .roles(user.getRoles())
                         .dateOfBirth(user.getDateOfBirth())
                         .build()
         );
@@ -67,27 +69,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-
-
-
-
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByEmail(email);
         if(user.isPresent()) {
-            return buildUserForAuthentication(user.get(),getUserAuthority(user.get().getRole()));
+            return buildUserForAuthentication(user.get(),getAuthority(user.get()));
         }
         throw new UsernameNotFoundException("User with email " + email + "not found");
     }
 
-    private List<GrantedAuthority> getUserAuthority(Role userRole) {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        roles.add((new SimpleGrantedAuthority(userRole.getName())));
-        return new ArrayList<>(roles);
+    private Set<SimpleGrantedAuthority> getAuthority(User user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        });
+        return authorities;
     }
 
-    private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
+    private UserDetails buildUserForAuthentication(User user, Set<SimpleGrantedAuthority> authorities) {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 }

@@ -1,13 +1,20 @@
 package ca.uqac.archicompanyproject.domain.patient;
 
+import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
+import ca.uqac.archicompanyproject.security.TokenProvider;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -16,6 +23,7 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepositoryInterface patientRepository;
     private final PasswordEncoder bCryptEncoder;
     private final RoleRepository roleRepository;
+    private final TokenProvider tokenProvider;
 
     @Override
     public Patient savePatient(Patient patient) {
@@ -24,18 +32,20 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient addPatient(Patient patient) {
-        patient.setRole(this.roleRepository.findByName(Roles.PATIENT.toString()));
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add( this.roleRepository.findByName(Roles.PATIENT.name()));
+        patient.setRoles(userRoles);
         patient.setPassword(bCryptEncoder.encode(patient.getPassword()));
         return this.patientRepository.save(patient);
     }
 
     @Override
-    public void deletePatient(Patient patient){
+    public void deletePatient(Patient patient) {
         patientRepository.delete(patient);
     }
 
     @Override
-    public Patient findPatientById(Integer id) throws NotFoundException{
+    public Patient findPatientById(Integer id) throws NotFoundException {
 
         Optional<Patient> patient = patientRepository.findById(id);
 
@@ -46,7 +56,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient findPatientByEmail(String email) throws  NotFoundException {
+    public Patient findPatientByEmail(String email) throws NotFoundException {
 
         Optional<Patient> patient = patientRepository.findByEmail(email);
 
@@ -54,6 +64,11 @@ public class PatientServiceImpl implements PatientService {
             return patient.get();
         }
         throw new NotFoundException("Patient with email:" + email + " not found");
+    }
+
+    public Patient getPatientFromToken(String token) throws NotFoundException {
+        token = token.replace("Bearer ","");
+        return findPatientByEmail(this.tokenProvider.getUsernameFromToken(token));
     }
 
     @Override

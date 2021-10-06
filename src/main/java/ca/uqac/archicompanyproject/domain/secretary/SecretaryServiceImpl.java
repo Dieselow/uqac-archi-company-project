@@ -1,5 +1,6 @@
 package ca.uqac.archicompanyproject.domain.secretary;
 
+import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import javassist.NotFoundException;
@@ -7,7 +8,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +27,9 @@ public class SecretaryServiceImpl implements  SecretaryService{
 
     @Override
     public Secretary addSecretary(Secretary secretary) {
-        secretary.setRole(this.roleRepository.findByName(Roles.SECRETARY.toString()));
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add( this.roleRepository.findByName(Roles.SECRETARY.name()));
+        secretary.setRoles(userRoles);
         secretary.setPassword(bCryptEncoder.encode(secretary.getPassword()));
         return this.secretaryRepository.save(secretary);
     }

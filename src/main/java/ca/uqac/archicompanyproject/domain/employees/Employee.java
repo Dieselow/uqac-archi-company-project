@@ -10,6 +10,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.PrimaryKeyJoinColumn;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,7 +25,7 @@ public class Employee extends User {
 
     private Date employmentDate;
 
-    public Employee(Integer ID, String username, String firstName, String lastName, Date dateOfBirth, String email, String password, String address, String phoneNumber, Role role, float salary, String workSchedule, Date employmentDate){
+    public Employee(Integer ID, String username, String firstName, String lastName, Date dateOfBirth, String email, String password, String address, String phoneNumber, Set<Role> role, float salary, String workSchedule, Date employmentDate){
         super(ID, username, firstName, lastName, dateOfBirth, email, password, address, phoneNumber, role);
         this.salary = salary;
         this.workSchedule = workSchedule;

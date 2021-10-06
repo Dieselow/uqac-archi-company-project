@@ -2,53 +2,67 @@ package ca.uqac.archicompanyproject.configuration;
 
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import ca.uqac.archicompanyproject.security.JwtTokenFilter;
-import ca.uqac.archicompanyproject.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.annotation.Resource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private TokenProvider tokenProvider;
+    @Resource(name = "userServiceImpl")
+    private UserDetailsService userDetailsService;
 
+    @Autowired
+    private UnauthorizedEntryPoint unauthorizedEntryPoint;
+
+   /** @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
+    }**/
+
+
+   @Override
+   protected void configure(HttpSecurity http) throws Exception {
+       http.cors().and().csrf().disable()
+               .authorizeRequests()
+               .antMatchers("/caregivers/auth/*", "/patients/auth/*","/secretaries/auth/*").permitAll()
+               .antMatchers("/auth/*").permitAll()
+               .anyRequest().authenticated()
+               .and()
+               .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint).and()
+               .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+       http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+   }
+
+
+    @Bean
+    public BCryptPasswordEncoder encoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/welcome").permitAll()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/patients/auth/**").permitAll()
-                .antMatchers("/secretaries/auth/**").permitAll()
-                .antMatchers("/caregivers/auth/**").permitAll()
-                .antMatchers("/patients/**").hasRole(Roles.PATIENT.toString())
-                .antMatchers("/caregivers/").hasRole(Roles.CAREGIVER.toString())
-                .antMatchers("/secretaries").hasRole(Roles.SECRETARY.toString())
-                //.antMatchers("/**").hasRole(Roles.ADMIN.toString())
-                .anyRequest()
-                .authenticated()
-                .and()
-                .addFilterBefore(new JwtTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
-    public PasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    public JwtTokenFilter authenticationTokenFilterBean() throws Exception {
+        return new JwtTokenFilter();
     }
 
 }
