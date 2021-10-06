@@ -6,11 +6,7 @@ https://springframework.guru/configuring-spring-boot-for-mariadb/
 ````docker-compose up -d````
 
 ## DB
- ``create db: make create-db``
- ``fill db: make fill-db``
-
-
-
-url : ``http://localhos:3001/api/v1/welcome``
+`` create db: make create-db``
+``fill db: make fill-db``
 
 Attention: faut voir le conteneur de bdd lancé via docker

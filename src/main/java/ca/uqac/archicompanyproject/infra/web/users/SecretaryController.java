@@ -1,19 +1,17 @@
-package ca.uqac.archicompanyproject.infra.web.secretary;
+package ca.uqac.archicompanyproject.infra.web.users;
 
+import ca.uqac.archicompanyproject.domain.patient.Patient;
 import ca.uqac.archicompanyproject.domain.secretary.Secretary;
 import ca.uqac.archicompanyproject.domain.secretary.SecretaryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/employees/secretaries")
+@RequestMapping("/secretaries")
 @AllArgsConstructor
 public class SecretaryController {
 
@@ -30,11 +28,8 @@ public class SecretaryController {
     }
 
     @GetMapping("/new")
-    public ResponseEntity<String> createNewSecretary() {
+    public ResponseEntity<String> createNewSecretary(@RequestBody Secretary secretary) {
         try {
-            Secretary secretary = Secretary.builder().firstName("Jeanne")
-                    .lastName("Dutronc")
-                    .salary(1234).password("ALLO").build();
             secretaryService.saveSecretary(secretary);
             return new ResponseEntity<>("Success", HttpStatus.OK);
         } catch (Exception e) {
@@ -42,12 +37,9 @@ public class SecretaryController {
         }
     }
 
-    @GetMapping("/update")
-    public ResponseEntity<String> updateSecretary() {
+    @GetMapping("/update/:id")
+    public ResponseEntity<String> updateSecretary(@RequestBody Secretary secretary) {
         try {
-            //TODO : modif ca
-            Secretary secretary = secretaryService.getSecretaries().iterator().next();
-            secretary.setFirstName("Jeannette");
             secretaryService.saveSecretary(secretary);
             return new ResponseEntity<>("Success", HttpStatus.OK);
         } catch (Exception e) {
@@ -55,7 +47,7 @@ public class SecretaryController {
         }
     }
 
-    @GetMapping("/delete")
+    @GetMapping("/delete/:id")
     public ResponseEntity<String> deleteSecretary(@RequestParam("id") Integer id) {
         try {
             Secretary secretary = Secretary.builder().ID(id).build();

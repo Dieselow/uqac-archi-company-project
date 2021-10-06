@@ -1,7 +1,6 @@
 
-
 -- CREATE database archiDB;
-UNLOCK TABLES ;
+
 -- dropping tables
 
 DROP TABLE IF EXISTS Appointment_Prescription;
@@ -19,10 +18,13 @@ DROP TABLE IF EXISTS Appointment;
 DROP TABLE IF EXISTS AppointmentType;
 DROP TABLE IF EXISTS Room;
 DROP TABLE IF EXISTS HealthFile;
+DROP TABLE IF EXISTS user_rights;
 DROP TABLE IF EXISTS Invoices;
 DROP TABLE IF EXISTS Prescription;
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS user_rights;
+
+
+
 
 CREATE TABLE Horodateur (
   ID            int(10) NOT NULL AUTO_INCREMENT,
@@ -56,20 +58,17 @@ CREATE TABLE user (
   ID             int(10) NOT NULL AUTO_INCREMENT,
   Username       varchar(255),
   Password       varchar(255),
-  first_name      varchar(255),
-  last_name       varchar(255),
-  date_of_birth    date,
+  FirstName      varchar(255),
+  LastName       varchar(255),
+  DateOfBirth    date,
   Email          varchar(255),
   Address        varchar(255),
-  phone_number    varchar(255),
+  PhoneNumber    varchar(255),
   Salary         float,
-  work_schedule   varchar(255),
-  employment_date date,
-  licence_number varchar(255),
-  role_id        int(10),
-  user_type      int(10) NOT NULL,
+  WorkSchedule   varchar(255),
+  EmploymentDate date,
+  LicenceNumber  varchar(255),
   PRIMARY KEY (ID));
-
 CREATE TABLE user_rights (
   ID   int(10) NOT NULL AUTO_INCREMENT,
   Name varchar(255),
@@ -136,7 +135,7 @@ CREATE TABLE Appointment_Prescription (
 
   -- Ajout des contraintes :
 
-ALTER TABLE Horodateur ADD CONSTRAINT FKHorodateur143537 FOREIGN KEY (AppointmentID) REFERENCES Appointment (ID);
+  ALTER TABLE Horodateur ADD CONSTRAINT FKHorodateur143537 FOREIGN KEY (AppointmentID) REFERENCES Appointment (ID);
 ALTER TABLE Appointment ADD CONSTRAINT FKAppointmen527929 FOREIGN KEY (InvoicesID) REFERENCES Invoices (ID);
 ALTER TABLE Invoices ADD CONSTRAINT FKInvoices246726 FOREIGN KEY (UserID) REFERENCES user (ID);
 ALTER TABLE Prescription ADD CONSTRAINT FKPrescripti894942 FOREIGN KEY (UserID) REFERENCES user (ID);
@@ -153,3 +152,8 @@ ALTER TABLE Tickets_Consumable ADD CONSTRAINT FKTickets_Co394299 FOREIGN KEY (Ti
 ALTER TABLE Tickets_Consumable ADD CONSTRAINT FKTickets_Co173873 FOREIGN KEY (ConsumableID) REFERENCES Consumable (ID);
 ALTER TABLE Appointment_Prescription ADD CONSTRAINT FKAppointmen100273 FOREIGN KEY (AppointmentID) REFERENCES Appointment (ID);
 ALTER TABLE Appointment_Prescription ADD CONSTRAINT FKAppointmen880462 FOREIGN KEY (PrescriptionID) REFERENCES Prescription (ID);
+
+
+  -- affichage des tables créées
+
+  show tables

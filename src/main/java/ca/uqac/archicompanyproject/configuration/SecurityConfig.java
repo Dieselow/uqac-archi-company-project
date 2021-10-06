@@ -1,5 +1,6 @@
 package ca.uqac.archicompanyproject.configuration;
 
+import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import ca.uqac.archicompanyproject.security.JwtTokenFilter;
 import ca.uqac.archicompanyproject.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/welcome").permitAll()
-                .antMatchers("/employees/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/**").hasRole(Roles.ADMIN.toString())//ICI PAS SUR QUE CA FONCTIONNE MAIS CA DEVRAIT
                 .anyRequest()
                 .authenticated()
                 .and()

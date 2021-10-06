@@ -2,6 +2,7 @@ package ca.uqac.archicompanyproject.infra.web.users;
 
 import ca.uqac.archicompanyproject.domain.users.User;
 import ca.uqac.archicompanyproject.domain.users.UserServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserServiceImpl userService;
 
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
     @GetMapping()
     public ResponseEntity<List<User>> getUsers() {
         try {
