@@ -16,10 +16,10 @@ import java.util.Date;
 @PrimaryKeyJoinColumn(name = "caregiver_id")
 public class Caregiver extends Employee {
 
-    private String licenceNumber;
+    String licenceNumber;
 
     @Builder
-    public Caregiver(Integer ID, String username, String firstName, String lastName, Date dateOfBirth, String email, String password, String address, String phoneNumber, Role role, float salary, String workSchedule, Date employmentDate, String licenceNumber){
+    public Caregiver(Integer ID, String username, String firstName, String lastName, Date dateOfBirth, String email, String password, String address, String phoneNumber, Role role, float salary, String workSchedule, Date employmentDate, String licenceNumber) {
         super(ID, username, firstName, lastName, dateOfBirth, email, password, address, phoneNumber, role, salary, workSchedule, employmentDate);
         this.licenceNumber = licenceNumber;
     }
