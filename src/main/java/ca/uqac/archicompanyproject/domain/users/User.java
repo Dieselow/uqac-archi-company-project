@@ -10,6 +10,7 @@ import java.util.Date;
 @Entity
 @Data
 @Getter
+@Setter
 @Builder(builderMethodName = "userBuilder")
 @AllArgsConstructor
 @NoArgsConstructor

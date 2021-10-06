@@ -28,13 +28,13 @@ public class SecretaryController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<String> createNewSecretary(@RequestBody Secretary secretary) {
+    public ResponseEntity<Secretary> createNewSecretary(@RequestBody Secretary secretary) {
         try {
             this.secretaryService.findSecretaryByEmail(secretary.getEmail());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }catch (NotFoundException exception){
-            secretaryService.addSecretary(secretary);
-            return new ResponseEntity<>("Success", HttpStatus.CREATED);
+            Secretary result = secretaryService.addSecretary(secretary);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
         }
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

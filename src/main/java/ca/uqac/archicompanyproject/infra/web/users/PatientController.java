@@ -29,23 +29,23 @@ public class PatientController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<String> createNewPatient(@RequestBody Patient patient) {
+    public ResponseEntity<Patient> createNewPatient(@RequestBody Patient patient) {
         try {
             this.patientService.findPatientByEmail(patient.getEmail());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (NotFoundException notFoundException) {
-            patientService.addPatient(patient);
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+            Patient result = patientService.addPatient(patient);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/update/:id")
-    public ResponseEntity<String> updatePatient(@RequestParam("id") Integer id, @RequestBody Patient patient) {
+    public ResponseEntity<Patient> updatePatient(@RequestParam("id") Integer id, @RequestBody Patient patient) {
         try {
-            patientService.savePatient(patient);
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+            Patient result = patientService.savePatient(patient);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
