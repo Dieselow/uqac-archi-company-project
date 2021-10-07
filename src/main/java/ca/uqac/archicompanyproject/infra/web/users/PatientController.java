@@ -57,21 +57,28 @@ public class PatientController {
 
     @GetMapping("/view/details")
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<Patient> getPatientDetails(@RequestHeader(value="Authorization") String token){
-        try{
+    public ResponseEntity<Patient> getPatientDetails(@RequestHeader(value = "Authorization") String token) {
+        try {
             Patient patient = this.patientService.getPatientFromToken(token);
-            return new ResponseEntity<>(patient,HttpStatus.OK);
-        }catch (NotFoundException e){
+            return new ResponseEntity<>(patient, HttpStatus.OK);
+        } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/update/:id")
     @PreAuthorize("hasAnyRole('PATIENT','SECRETARY')")
-    public ResponseEntity<Patient> updatePatient(@RequestParam("id") Integer id, @RequestBody Patient patient) {
+    public ResponseEntity<Patient> updatePatient(@RequestHeader(value = "Authorization") String token, @RequestParam("id") Integer id, @RequestBody Patient patient) {
         try {
+            Patient currentPatient = this.patientService.getPatientFromToken(token);
+            if (currentPatient.getID() != id) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            Patient result = patientService.savePatient(patient);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (NotFoundException e) {
             Patient result = patientService.savePatient(patient);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
