@@ -1,6 +1,6 @@
 https://www.toptal.com/spring/spring-security-tutorial
 https://springframework.guru/configuring-spring-boot-for-mariadb/
-
+https://www.baeldung.com/rest-api-search-language-spring-data-specifications
 
 # Up the project
 ````docker-compose up -d````

@@ -18,12 +18,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/secretaries")
 @AllArgsConstructor
-@PreAuthorize("hasRole('SECRETARY')")
 public class SecretaryController {
 
     private final SecretaryService secretaryService;
 
     @GetMapping()
+    @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<List<Secretary>> getSecretaries() {
         try {
             List<Secretary> secretaries = (List<Secretary>) secretaryService.getSecretaries();
@@ -34,6 +34,7 @@ public class SecretaryController {
     }
 
     @GetMapping("/view/:id")
+    @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<Secretary> getSecretary(@RequestParam("id") Integer id) {
         try {
             Secretary result = this.secretaryService.findSecretaryById(id);
@@ -59,6 +60,7 @@ public class SecretaryController {
     }
 
     @PutMapping("/update/:id")
+    @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<String> updateSecretary(@RequestParam("id") Integer id, @RequestBody Secretary secretary) {
         try {
             secretary.setID(id);
@@ -70,6 +72,7 @@ public class SecretaryController {
     }
 
     @GetMapping("/delete/:id")
+    @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<String> deleteSecretary(@RequestParam("id") Integer id) {
         try {
             Secretary secretary = Secretary.builder().ID(id).build();

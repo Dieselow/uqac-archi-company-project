@@ -5,7 +5,7 @@ import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -65,8 +65,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Iterable<User> getUsers() {
-        return userRepository.findAll();
+    public List getUsers(Specification specification) {
+        return userRepository.findAll(specification);
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return (List<User>) this.userRepository.findAll();
     }
 
     @Override
