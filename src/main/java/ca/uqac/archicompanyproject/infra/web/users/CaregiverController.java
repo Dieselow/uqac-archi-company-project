@@ -2,8 +2,12 @@ package ca.uqac.archicompanyproject.infra.web.users;
 
 import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
 import ca.uqac.archicompanyproject.domain.caregiver.CaregiverService;
+import ca.uqac.archicompanyproject.domain.search.CriteriaParser;
+import ca.uqac.archicompanyproject.domain.search.GenericSpecification;
+import ca.uqac.archicompanyproject.domain.search.GenericSpecificationsBuilder;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +24,13 @@ public class CaregiverController {
 
     @GetMapping()
     @PreAuthorize("hasRole('SECRETARY')")
-    public ResponseEntity<List<Caregiver>> getCaregivers() {
+    public ResponseEntity<List<Caregiver>> getCaregivers(@RequestParam(value = "search",required = false) String search) {
         try {
-            List<Caregiver> caregivers = (List<Caregiver>) caregiverService.getCaregivers();
+            if (search == null){
+                List<Caregiver> caregivers = caregiverService.getCaregivers();
+                return new ResponseEntity<>(caregivers, HttpStatus.OK);
+            }
+            List<Caregiver> caregivers = caregiverService.getCaregivers(this.resolveSpecificationFromInfixExpr(search));
             return new ResponseEntity<>(caregivers, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -76,6 +84,12 @@ public class CaregiverController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    protected Specification<Caregiver> resolveSpecificationFromInfixExpr(String searchParameters) {
+        CriteriaParser parser = new CriteriaParser();
+        GenericSpecificationsBuilder<Caregiver> specBuilder = new GenericSpecificationsBuilder<>();
+        return specBuilder.build(parser.parse(searchParameters), GenericSpecification::new);
     }
 
 }

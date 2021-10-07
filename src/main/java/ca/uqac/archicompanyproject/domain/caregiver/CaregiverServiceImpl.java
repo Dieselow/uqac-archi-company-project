@@ -5,10 +5,12 @@ import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,7 +62,12 @@ public class CaregiverServiceImpl implements  CaregiverService{
     }
 
     @Override
-    public Iterable<Caregiver> getCaregivers() {
-        return caregiverRepository.findAll();
+    public List<Caregiver> getCaregivers(Specification specification) {
+        return caregiverRepository.findAll(specification);
+    }
+
+    @Override
+    public List<Caregiver> getCaregivers() {
+        return (List<Caregiver>) this.caregiverRepository.findAll();
     }
 }

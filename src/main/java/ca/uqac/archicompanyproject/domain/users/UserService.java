@@ -10,4 +10,5 @@ public interface UserService {
     User findUserByEmail(String email) throws NotFoundException;
     User findUserById(Integer id) throws NotFoundException;
     List<User> getUsers(Specification specification);
+    List<User> getUsers();
 }

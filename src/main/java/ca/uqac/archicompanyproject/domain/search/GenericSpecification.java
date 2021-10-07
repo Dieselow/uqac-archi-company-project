@@ -1,29 +1,24 @@
-package ca.uqac.archicompanyproject.domain.users;
+package ca.uqac.archicompanyproject.domain.search;
 
-import ca.uqac.archicompanyproject.domain.search.SpecSearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
-
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-public class UserSpecification implements Specification<User> {
-
+public class GenericSpecification<Object> implements Specification<Object> {
     private SpecSearchCriteria criteria;
 
-    public UserSpecification(final SpecSearchCriteria criteria) {
-        super();
+    public GenericSpecification(SpecSearchCriteria criteria) {
         this.criteria = criteria;
     }
-
     public SpecSearchCriteria getCriteria() {
         return criteria;
     }
 
     @Override
-    public Predicate toPredicate(final Root<User> root, final CriteriaQuery<?> query, final CriteriaBuilder builder) {
+    public Predicate toPredicate(Root<Object> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         switch (criteria.getOperation()) {
             case EQUALITY:
                 return builder.equal(root.get(criteria.getKey()), criteria.getValue());
@@ -45,5 +40,4 @@ public class UserSpecification implements Specification<User> {
                 return null;
         }
     }
-
 }

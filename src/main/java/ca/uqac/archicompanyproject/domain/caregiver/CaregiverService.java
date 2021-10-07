@@ -1,6 +1,9 @@
 package ca.uqac.archicompanyproject.domain.caregiver;
 
 import javassist.NotFoundException;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.List;
 
 public interface CaregiverService {
     Caregiver saveCaregiver(Caregiver caregiver);
@@ -8,5 +11,6 @@ public interface CaregiverService {
     void deleteCaregiver(Caregiver caregiver);
     Caregiver findCaregiverById(Integer id) throws NotFoundException;
     Caregiver findCaregiverByEmail(String email) throws  NotFoundException;
-    Iterable<Caregiver> getCaregivers();
+    List<Caregiver> getCaregivers(Specification specification);
+    List<Caregiver> getCaregivers();
 }

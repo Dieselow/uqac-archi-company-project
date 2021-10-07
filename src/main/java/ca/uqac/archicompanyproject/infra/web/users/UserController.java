@@ -1,12 +1,10 @@
 package ca.uqac.archicompanyproject.infra.web.users;
 
-import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
 import ca.uqac.archicompanyproject.domain.search.CriteriaParser;
+import ca.uqac.archicompanyproject.domain.search.GenericSpecification;
 import ca.uqac.archicompanyproject.domain.search.GenericSpecificationsBuilder;
 import ca.uqac.archicompanyproject.domain.users.User;
 import ca.uqac.archicompanyproject.domain.users.UserService;
-import ca.uqac.archicompanyproject.domain.users.UserServiceImpl;
-import ca.uqac.archicompanyproject.domain.users.UserSpecification;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,8 +26,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<User>> getUsers(@RequestParam(value = "search") String search) {
+    public ResponseEntity<List<User>> getUsers(@RequestParam(value = "search",required = false) String search) {
         try {
+            if (search == null){
+                List<User> users = userService.getUsers();
+                return new ResponseEntity<>(users, HttpStatus.OK);
+            }
             List<User> users = userService.getUsers(this.resolveSpecificationFromInfixExpr(search));
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
@@ -62,6 +64,6 @@ public class UserController {
     protected Specification<User> resolveSpecificationFromInfixExpr(String searchParameters) {
         CriteriaParser parser = new CriteriaParser();
         GenericSpecificationsBuilder<User> specBuilder = new GenericSpecificationsBuilder<>();
-        return specBuilder.build(parser.parse(searchParameters), UserSpecification::new);
+        return specBuilder.build(parser.parse(searchParameters), GenericSpecification::new);
     }
 }
