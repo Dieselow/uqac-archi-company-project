@@ -3,6 +3,8 @@ package ca.uqac.archicompanyproject.domain.patient;
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
+import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
+import ca.uqac.archicompanyproject.domain.caregiver.CaregiverService;
 import ca.uqac.archicompanyproject.security.TokenProvider;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -74,5 +76,10 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public Iterable<Patient> getPatients() {
         return patientRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Patient> findByPrimaryDoctor(Caregiver caregiver){
+        return patientRepository.findByPrimaryDoctor(caregiver);
     }
 }
