@@ -7,8 +7,6 @@ import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
 import ca.uqac.archicompanyproject.domain.healthfile.HealthFile;
 import ca.uqac.archicompanyproject.domain.healthfile.HealthFileRepositoryInterface;
 import ca.uqac.archicompanyproject.security.TokenProvider;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
