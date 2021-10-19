@@ -4,16 +4,12 @@ import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
-import ca.uqac.archicompanyproject.domain.caregiver.CaregiverService;
 import ca.uqac.archicompanyproject.security.TokenProvider;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
