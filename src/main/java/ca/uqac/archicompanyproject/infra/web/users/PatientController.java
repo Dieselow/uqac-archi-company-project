@@ -35,13 +35,8 @@ public class PatientController {
             this.patientService.findPatientByEmail(patient.getEmail());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (NotFoundException notFoundException) {
-            try {
-                Patient result = patientService.addPatient(patient);
-                return new ResponseEntity<>(result, HttpStatus.OK);
-            } catch (NotFoundException notFoundException1) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
+            Patient result = patientService.addPatient(patient);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -84,13 +79,8 @@ public class PatientController {
             Patient result = patientService.savePatient(patient);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (NotFoundException e) {
-            try {
-                Patient result = patientService.savePatient(patient);
-                return new ResponseEntity<>(result, HttpStatus.OK);
-            } catch (NotFoundException notFoundException){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
+            Patient result = patientService.savePatient(patient);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
