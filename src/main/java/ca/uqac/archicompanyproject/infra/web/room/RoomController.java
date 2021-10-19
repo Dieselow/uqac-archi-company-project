@@ -60,9 +60,11 @@ public class RoomController {
     @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<String> deleteEquipment(@RequestParam("id") Integer equipmentId) {
         try {
-            roomService.deleteEquipment(Equipment.builder().ID(equipmentId).build());
+            roomService.deleteEquipment(equipmentId);
             return new ResponseEntity<>("Success",HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -74,6 +76,50 @@ public class RoomController {
             equipment = roomService.updateEquipment(equipment);
             return new ResponseEntity<>(equipment, HttpStatus.OK);
         } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/equipments/type/add")
+    @PreAuthorize("hasRole('SECRETARY')")
+    public ResponseEntity<EquipmentType> addEquipmentType(@RequestBody() EquipmentType equipmentType) {
+        try {
+            EquipmentType equipmentType1 = roomService.addEquipmentType(equipmentType);
+            return new ResponseEntity<>(equipmentType1, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/equipments/type")
+    @PreAuthorize("hasRole('SECRETARY')")
+    public ResponseEntity<List<EquipmentType>> getEquipmentTypes() {
+        try {
+            List<EquipmentType> equipmentTypes = (List<EquipmentType>) roomService.getEquipmentTypes();
+            return new ResponseEntity<>(equipmentTypes, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/equipments/type/update")
+    @PreAuthorize("hasRole('SECRETARY')")
+    public ResponseEntity<EquipmentType> updateEquipmentType(@RequestBody() EquipmentType equipmentType) {
+        try {
+            equipmentType = roomService.updateEquipmentType(equipmentType);
+            return new ResponseEntity<>(equipmentType, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/equipments/type/delete/:id")
+    @PreAuthorize("hasRole('SECRETARY')")
+    public ResponseEntity<String> deleteEquipmentType(@RequestParam("id") Integer equipmentTypeId) {
+        try {
+            roomService.deleteEquipmentType(equipmentTypeId);
+            return new ResponseEntity<>("Success",HttpStatus.OK);
+        }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

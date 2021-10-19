@@ -46,9 +46,9 @@ VALUES
 UNLOCK TABLES;
 
 
-INSERT INTO `export`(id, name)
+INSERT INTO `room`(id, name)
      VALUES (50, 'Salle 1');
-INSERT INTO `export`(id, name)
+INSERT INTO `room`(id, name)
      VALUES (51, 'Salle2');
 
 
