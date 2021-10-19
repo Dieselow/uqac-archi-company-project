@@ -23,7 +23,6 @@ import java.util.Set;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepositoryInterface patientRepository;
-    private final CaregiverService caregiverService;
     private final PasswordEncoder bCryptEncoder;
     private final RoleRepository roleRepository;
     private final TokenProvider tokenProvider;
@@ -34,7 +33,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient addPatient(Patient patient){
+    public Patient addPatient(Patient patient) {
         Set<Role> userRoles = new HashSet<>();
         userRoles.add( this.roleRepository.findByName(Roles.PATIENT.name()));
         patient.setRoles(userRoles);
