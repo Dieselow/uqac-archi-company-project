@@ -1,5 +1,6 @@
 package ca.uqac.archicompanyproject.domain.patient;
 
+import ca.uqac.archicompanyproject.domain.healthfile.HealthFile;
 import javassist.NotFoundException;
 
 public interface PatientService {
@@ -10,4 +11,12 @@ public interface PatientService {
     Patient findPatientById(Integer id) throws NotFoundException;
     Patient findPatientByEmail(String email) throws  NotFoundException;
     Iterable<Patient> getPatients();
+
+    HealthFile findHealthfileById(Integer id) throws NotFoundException;
+    Patient addHealthFile(Integer patientId, HealthFile healthFile) throws NotFoundException;
+    HealthFile updateHealthFile(Integer patientId, HealthFile healthFile) throws NotFoundException;
+    HealthFile saveHealthFile(HealthFile healthFile);
+    void deleteHealthFile(Integer healthFileId) throws NotFoundException;
+
+
 }
