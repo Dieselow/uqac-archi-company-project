@@ -22,9 +22,7 @@ public class HealthFileController {
     public ResponseEntity<Patient> createNewHealthFileForPatientId(@RequestParam("id") Integer patientId, @RequestBody HealthFile healthFile) {
         try {
             //TODO : CHECK AUTHO PAS POSSIBLE TANT QUE PRIMARY PAS IMPLEMENTE
-            Patient patient = this.patientService.findPatientById(patientId);
-            patient.setHealthFile(healthFile);
-            patientService.savePatient(patient);
+            Patient patient = patientService.addHealthFile(patientId, healthFile);
             return new ResponseEntity<>(patient, HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -38,9 +36,7 @@ public class HealthFileController {
     public ResponseEntity<HealthFile> updateHealthFileForPatientId(@RequestParam("id") Integer patientId, @RequestBody HealthFile healthFile) {
         try {
             //TODO : CHECK AUTHO PAS POSSIBLE TANT QUE PRIMARY PAS IMPLEMENTE
-            Patient patient = patientService.findPatientById(patientId);
-            healthFile.setID(patient.getHealthFile().getID());
-            patientService.saveHealthFile(healthFile);
+            patientService.updateHealthFile(patientId, healthFile);
             return new ResponseEntity<>(healthFile, HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,10 +47,10 @@ public class HealthFileController {
 
     @GetMapping("/view/:id")
     @PreAuthorize("hasRole('CAREGIVER')")
-    public ResponseEntity<HealthFile> viewHealthFileFromPatientId(@RequestParam("id") Integer patientId) {
+    public ResponseEntity<HealthFile> viewHealthFileFromPatientId(@RequestParam("id") Integer healthFileId) {
         try {
             //TODO : CHECK AUTHO PAS POSSIBLE TANT QUE PRIMARY PAS IMPLEMENTE
-            HealthFile healthFile = patientService.findPatientById(patientId).getHealthFile();
+            HealthFile healthFile = patientService.findHealthfileById(healthFileId);
             return new ResponseEntity<>(healthFile, HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,11 +61,10 @@ public class HealthFileController {
 
     @DeleteMapping("/delete/:id")
     @PreAuthorize("hasRole('CAREGIVER')")
-    public ResponseEntity<HealthFile> deleteHealthFileFromPatientId(@RequestParam("id") Integer patientId) {
+    public ResponseEntity<HealthFile> deleteHealthFileFromPatientId(@RequestParam("id") Integer healthFileId) {
         try {
             //TODO : CHECK AUTHO PAS POSSIBLE TANT QUE PRIMARY PAS IMPLEMENTE
-            Patient patient = patientService.findPatientById(patientId);
-            patientService.deleteHealthFile(patient);
+            patientService.deleteHealthFile(healthFileId);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

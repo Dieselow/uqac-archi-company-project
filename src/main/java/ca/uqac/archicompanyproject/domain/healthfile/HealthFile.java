@@ -1,14 +1,13 @@
 package ca.uqac.archicompanyproject.domain.healthfile;
 
+import ca.uqac.archicompanyproject.domain.patient.Patient;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -25,4 +24,8 @@ public class HealthFile {
     private String chronicConditions;
 
     private String emergencyContact;
+
+    @OneToOne(mappedBy = "healthFile")
+    @JsonBackReference
+    private Patient patient;
 }

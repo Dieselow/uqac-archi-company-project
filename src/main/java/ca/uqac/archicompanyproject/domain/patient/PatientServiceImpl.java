@@ -27,18 +27,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient savePatient(Patient patient) {
-        saveHealthFile(patient.getHealthFile());
-
         return patientRepository.save(patient);
-    }
-
-    @Override
-    public void saveHealthFile(HealthFile healthFile) {
-        if(healthFile == null){
-            return;
-        }
-
-        healthFileRepository.save(healthFile);
     }
 
     @Override
@@ -48,6 +37,12 @@ public class PatientServiceImpl implements PatientService {
         patient.setRoles(userRoles);
         patient.setPassword(bCryptEncoder.encode(patient.getPassword()));
         return this.patientRepository.save(patient);
+    }
+
+    @Override
+    public Patient getPatientFromToken(String token) throws NotFoundException {
+        token = token.replace("Bearer ","");
+        return findPatientByEmail(this.tokenProvider.getUsernameFromToken(token));
     }
 
     @Override
@@ -77,20 +72,49 @@ public class PatientServiceImpl implements PatientService {
         throw new NotFoundException("Patient with email:" + email + " not found");
     }
 
-    public Patient getPatientFromToken(String token) throws NotFoundException {
-        token = token.replace("Bearer ","");
-        return findPatientByEmail(this.tokenProvider.getUsernameFromToken(token));
-    }
-
     @Override
     public Iterable<Patient> getPatients() {
         return patientRepository.findAll();
     }
 
     @Override
-    public void deleteHealthFile(Patient patient){
-        HealthFile healthFile = patient.getHealthFile();
-        patient.setHealthFile(null);
+    public HealthFile findHealthfileById(Integer id) throws NotFoundException {
+        Optional<HealthFile> healthFile = healthFileRepository.findById(id);
+
+        if (healthFile.isPresent()) {
+            return healthFile.get();
+        }
+        throw new NotFoundException("HealthFile with id " + id + " not found");
+    }
+
+    @Override
+    public Patient addHealthFile(Integer patientId, HealthFile healthFile) throws NotFoundException{
+        Patient patient = this.findPatientById(patientId);
+        healthFile.setPatient(patient);
+        patient.setHealthFile(healthFile);
+        saveHealthFile(healthFile);
+        return patient;
+    }
+
+    @Override
+    public HealthFile updateHealthFile(Integer patientId, HealthFile healthFile) throws NotFoundException {
+        Patient patient = this.findPatientById(patientId);
+        healthFile.setPatient(patient);
+        return this.saveHealthFile(healthFile);
+    }
+
+    @Override
+    public HealthFile saveHealthFile(HealthFile healthFile) {
+        //Ici on a un probleme si on change a quel patient le healthfile est affecte - si je laisse le update comme actuel, on peut update que en passant par le patient
+        healthFileRepository.save(healthFile);
+        patientRepository.save(healthFile.getPatient());
+        return healthFile;
+    }
+
+    @Override
+    public void deleteHealthFile(Integer healthFileId) throws NotFoundException {
+        HealthFile healthFile = this.findHealthfileById(healthFileId);
+        healthFile.getPatient().setHealthFile(null);
         healthFileRepository.delete(healthFile);
     }
 

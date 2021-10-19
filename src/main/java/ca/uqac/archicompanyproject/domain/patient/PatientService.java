@@ -10,7 +10,13 @@ public interface PatientService {
     void deletePatient(Patient patient);
     Patient findPatientById(Integer id) throws NotFoundException;
     Patient findPatientByEmail(String email) throws  NotFoundException;
-    void saveHealthFile(HealthFile healthFile);
-    public void deleteHealthFile(Patient patient);
     Iterable<Patient> getPatients();
+
+    HealthFile findHealthfileById(Integer id) throws NotFoundException;
+    Patient addHealthFile(Integer patientId, HealthFile healthFile) throws NotFoundException;
+    HealthFile updateHealthFile(Integer patientId, HealthFile healthFile) throws NotFoundException;
+    HealthFile saveHealthFile(HealthFile healthFile);
+    void deleteHealthFile(Integer healthFileId) throws NotFoundException;
+
+
 }

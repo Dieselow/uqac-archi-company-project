@@ -3,6 +3,7 @@ package ca.uqac.archicompanyproject.domain.patient;
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.healthfile.HealthFile;
 import ca.uqac.archicompanyproject.domain.users.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.Set;
 public class Patient extends User {
 
     @OneToOne
+    @JsonManagedReference
     @JoinColumn(name = "healthfile_id", referencedColumnName = "id")
     private HealthFile healthFile;
 
