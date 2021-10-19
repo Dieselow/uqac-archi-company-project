@@ -29,24 +29,16 @@ public class PatientServiceImpl implements PatientService {
     private final TokenProvider tokenProvider;
 
     @Override
-    public Patient savePatient(Patient patient) throws NotFoundException {
-        if (patient.getPrimaryDoctor() != null){
-            patient.setPrimaryDoctor(caregiverService.findCaregiverById(patient.getPrimaryDoctor().getID()));
-        }
-
+    public Patient savePatient(Patient patient){
         return patientRepository.save(patient);
     }
 
     @Override
-    public Patient addPatient(Patient patient) throws NotFoundException {
+    public Patient addPatient(Patient patient){
         Set<Role> userRoles = new HashSet<>();
         userRoles.add( this.roleRepository.findByName(Roles.PATIENT.name()));
         patient.setRoles(userRoles);
         patient.setPassword(bCryptEncoder.encode(patient.getPassword()));
-
-        if (patient.getPrimaryDoctor() != null){
-            patient.setPrimaryDoctor(caregiverService.findCaregiverById(patient.getPrimaryDoctor().getID()));
-        }
         return this.patientRepository.save(patient);
     }
 
