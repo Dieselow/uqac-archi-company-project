@@ -1,33 +1,33 @@
 package ca.uqac.archicompanyproject.domain.consumable;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import ca.uqac.archicompanyproject.domain.ConsumableType.ConsumableType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import ca.uqac.archicompanyproject.domain.ticket.Ticket;
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
+@Getter
+@Setter
 @Builder(builderMethodName = "consumableBuilder")
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Consumable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer ID;
     private Integer quantity;
     private Integer threshold;
+    @ManyToOne()
+    @JoinColumn(name="consumableType_id",
+            referencedColumnName = "consumable_id")
+    private Set<ConsumableType> consumableType;
 
-    @Entity
-    @Data
-    public static class ConsumableType {
-        private String name;
-        private String brand;
-    }
+    @ManyToMany(mappedBy = "consumables")
+    private Set<Ticket> tickets;
+
 
 }
