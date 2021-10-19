@@ -942,7 +942,7 @@
     {
       "_id": "req_da330123dabf4997bc9d993c2d905aeb",
       "parentId": "fld_ead3adfc11824266b778846895c7de76",
-      "modified": 1634262304173,
+      "modified": 1634608914303,
       "created": 1633486126682,
       "url": "{{url}}/patients/auth/register",
       "name": "Register",
@@ -950,7 +950,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"username\": \"JDPatient\",\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Patient\",\n\t\"password\": \"{{ _.password }}\",\n\t\"email\": \"{{ _.emailPatient }}\",\n\t\"dateOfBirth\" : \"2020-05-05\",\n\t\"address\": \"test\",\n\t\"phoneNumber\": 247563,\n\t\"primaryDoctor\" : {\"id\":24}\n}"
+        "text": "{\n\t\"username\": \"JDPatient\",\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Patient\",\n\t\"password\": \"{{ _.password }}\",\n\t\"email\": \"{{ _.emailPatient }}\",\n\t\"dateOfBirth\" : \"2020-05-05\",\n\t\"address\": \"test\",\n\t\"phoneNumber\": 247563,\n\t\"primaryDoctor\": {\"id\": 24}\n}"
       },
       "parameters": [],
       "headers": [
@@ -974,7 +974,7 @@
     {
       "_id": "req_851418bee90d443286fea8e14cfcda5a",
       "parentId": "fld_ead3adfc11824266b778846895c7de76",
-      "modified": 1633617952804,
+      "modified": 1634609399871,
       "created": 1633486231286,
       "url": "{{url}}/patients/update/:id",
       "name": "update",
@@ -982,7 +982,7 @@
       "method": "PUT",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"id\": 1,\n\t\"username\": \"JDPatientUpdate\",\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Patient\",\n\t\"password\": \"{{ _.password }}\",\n\t\"email\": \"{{ _.email }}\",\n\t\"dateOfBirth\" : \"2020-05-05\",\n\t\"address\": \"test\",\n\t\"phoneNumber\": 247563\n}"
+        "text": "{\n\t\"id\": 61,\n\t\"username\": \"JDPatientUpdate\",\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Patient\",\n\t\"password\": \"{{ _.password }}\",\n\t\"email\": \"{{ _.emailPatient }}\",\n\t\"dateOfBirth\" : \"2020-05-05\",\n\t\"address\": \"test\",\n\t\"phoneNumber\": 247563,\n\t\"primaryDoctor\":null\n}"
       },
       "parameters": [
         {

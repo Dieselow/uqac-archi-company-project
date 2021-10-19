@@ -3,6 +3,7 @@ package ca.uqac.archicompanyproject.domain.patient;
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
+import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
 import ca.uqac.archicompanyproject.domain.healthfile.HealthFile;
 import ca.uqac.archicompanyproject.domain.healthfile.HealthFileRepositoryInterface;
 import ca.uqac.archicompanyproject.security.TokenProvider;
@@ -72,6 +73,7 @@ public class PatientServiceImpl implements PatientService {
         throw new NotFoundException("Patient with email:" + email + " not found");
     }
 
+
     @Override
     public Iterable<Patient> getPatients() {
         return patientRepository.findAll();
@@ -118,4 +120,9 @@ public class PatientServiceImpl implements PatientService {
         healthFileRepository.delete(healthFile);
     }
 
+
+    @Override
+    public Iterable<Patient> findByPrimaryDoctor(Caregiver caregiver){
+        return patientRepository.findByPrimaryDoctor(caregiver);
+    }
 }
