@@ -46,6 +46,11 @@ VALUES
 UNLOCK TABLES;
 
 
+INSERT INTO `room`(id, name)
+     VALUES (50, 'Salle 1');
+INSERT INTO `room`(id, name)
+     VALUES (51, 'Salle2');
+
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
