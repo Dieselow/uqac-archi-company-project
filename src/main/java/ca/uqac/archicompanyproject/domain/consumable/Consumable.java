@@ -18,13 +18,13 @@ import java.util.Set;
 public class Consumable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer ID;
-    private Integer quantity;
-    private Integer threshold;
+    Integer ID;
+    Integer quantity;
+    Integer threshold;
     @ManyToOne()
     @JoinColumn(name="consumableType_id",
-            referencedColumnName = "consumable_id")
-    private Set<ConsumableType> consumableType;
+            referencedColumnName = "id")
+     ConsumableType consumableType;
 
     @ManyToMany(mappedBy = "consumables")
     private Set<Ticket> tickets;

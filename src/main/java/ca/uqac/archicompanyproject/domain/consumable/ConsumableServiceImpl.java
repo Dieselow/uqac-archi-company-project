@@ -4,35 +4,44 @@ import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class ConsumableServiceImpl implements ConsumableService {
     private final ConsumableRepositoryInterface consumableRepository;
 
-    Consumable addConsumable(Consumable consumable){
+    @Override
+    public Consumable saveConsumable(Consumable consumable) {
+        return this.consumableRepository.save(consumable);
+    }
+
+    public Consumable addConsumable(Consumable consumable){
         return this.consumableRepository.save(
                 Consumable.consumableBuilder()
                         .quantity(consumable.getQuantity())
                         .threshold(consumable.getThreshold())
-                        .name(consumable.consumableType.getName()) //NON FONCTIONNEL
-                        .brand(consumable.consumableType.getBrand()) // NON FONCTIONNEL
+                        .consumableType(consumable.getConsumableType())
                         .build()
         );
     }
 
-    void deleteConsumable(Consumable consumable){}
-
-    Consumable findConsumableById(Integer id) throws NotFoundException{
-        ;
+    public void deleteConsumable(Integer consummableId){
+        this.consumableRepository.deleteById(consummableId);
     }
 
-    Consumable findConsumableByName(String name) throws NotFoundException{
-
+    public Consumable findConsumableById(Integer id) throws NotFoundException{
+        Optional<Consumable> consumable;
+        consumable = this.consumableRepository.findById(id);
+        if (consumable.isPresent()){
+            return consumable.get();
+        }
+        throw new NotFoundException("Consummable with Id : " + id + " not found");
     }
 
 
 
-    public Iterable<Consumable.ConsumableType> getConsumables(){
+    public Iterable<Consumable> getConsumables(){
         return this.consumableRepository.findAll();
     }
 

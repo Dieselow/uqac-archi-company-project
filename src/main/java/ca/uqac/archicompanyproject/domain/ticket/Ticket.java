@@ -17,13 +17,13 @@ import java.util.Set;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer ID;
-    private Date requestDate;
+    Integer ID;
+    Date requestDate;
     @ManyToMany
     @JoinTable(
             name = "ticket_consumables",
             joinColumns = @JoinColumn (name = "ticket_id"),
             inverseJoinColumns = @JoinColumn(name = "consumable_id")
     )
-    private Set<Consumable> consumables;
+    Set<Consumable> consumables;
 }

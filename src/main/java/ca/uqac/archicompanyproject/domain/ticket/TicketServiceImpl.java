@@ -1,6 +1,5 @@
 package ca.uqac.archicompanyproject.domain.ticket;
 
-//import ca.uqac.archicompanyproject.domain.consumable.Consumable
 
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,7 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
-public class TicketServiceImpl {
+public class TicketServiceImpl implements TicketService {
     //Class repositories
     private final TicketRepositoryInterface ticketRepository;
 

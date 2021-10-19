@@ -3,7 +3,6 @@ package ca.uqac.archicompanyproject.infra.web.ticket;
 import ca.uqac.archicompanyproject.domain.ticket.Ticket;
 import ca.uqac.archicompanyproject.domain.ticket.TicketService;
 import javassist.NotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,10 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ticket")
-@AllArgsConstructor
-public class TicketController {
+public class TicketsController {
 
     private final TicketService ticketService;
+
+    public TicketsController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
 
     //Get tous les tickets
     @GetMapping()
@@ -55,7 +57,7 @@ public class TicketController {
     }
 
     //créer un nouveau ticket
-    @PutMapping("/update/:id")
+    @PostMapping("/update/:id")
     @PreAuthorize("hasRole('CAREGIVER, SECRETARY')")
     public ResponseEntity<Ticket> createNewTicket(@RequestBody Ticket ticket) {
         try {
