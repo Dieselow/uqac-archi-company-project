@@ -76,6 +76,7 @@ public class PatientController {
             if (currentPatient.getID() != id) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
+            patient.setID(id);
             Patient result = patientService.savePatient(patient);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (NotFoundException e) {

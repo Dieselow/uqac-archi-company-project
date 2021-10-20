@@ -67,6 +67,7 @@ public class CaregiverController {
     @PreAuthorize("hasAnyRole('SECRETARY','CAREGIVER')")
     public ResponseEntity<Caregiver> updateCaregiver(@RequestParam("id") Integer id, @RequestBody Caregiver caregiver) {
         try {
+            caregiver.setID(id);
             Caregiver result = caregiverService.saveCaregiver(caregiver);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
