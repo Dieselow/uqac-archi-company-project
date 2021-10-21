@@ -1,7 +1,7 @@
 package ca.uqac.archicompanyproject.domain.ticket;
 
+import ca.uqac.archicompanyproject.domain.consumable.Consumable;
 import javassist.NotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.*;
 
@@ -10,6 +10,7 @@ public interface TicketService {
     Ticket addTicket(Ticket ticket);
     Ticket findTicketById(Integer id) throws NotFoundException;
     Ticket findTicketByDate(Date date) throws NotFoundException;
+    Ticket findTicketByConsumable(Consumable consumable)throws  NotFoundException;
     void deleteTicket(Ticket ticket);
     List<Ticket> getTickets();
 }

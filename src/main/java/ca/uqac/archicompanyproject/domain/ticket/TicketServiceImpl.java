@@ -1,6 +1,7 @@
 package ca.uqac.archicompanyproject.domain.ticket;
 
 
+import ca.uqac.archicompanyproject.domain.consumable.Consumable;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,10 @@ public class TicketServiceImpl implements TicketService {
 
     public Ticket findTicketByDate(Date requestDate) throws NotFoundException{
         return this.ticketRepository.findByRequestDate(requestDate).orElse(null);
+    }
+
+    public Ticket findTicketByConsumable(Consumable consumable) throws NotFoundException{
+        return this.ticketRepository.findByConsumable(consumable).orElse(null);
     }
 
     public void deleteTicket(Ticket ticket){
