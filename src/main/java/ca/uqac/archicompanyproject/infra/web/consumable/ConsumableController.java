@@ -52,7 +52,7 @@ public class ConsumableController {
         }
     }
 
-    @PostMapping("/update/:id")
+    @PostMapping("")
     @PreAuthorize("hasRole('CAREGIVER, SECRETARY')")
     public ResponseEntity<Consumable> createNewConsumable(@RequestBody Consumable consumable) {
         try {

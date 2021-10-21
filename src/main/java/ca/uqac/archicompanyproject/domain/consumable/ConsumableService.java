@@ -1,6 +1,5 @@
 package ca.uqac.archicompanyproject.domain.consumable;
 
-import ca.uqac.archicompanyproject.domain.consumableType.ConsumableType;
 import javassist.NotFoundException;
 
 public interface ConsumableService {

@@ -1,4 +1,4 @@
-package ca.uqac.archicompanyproject.domain.ConsumableType;
+package ca.uqac.archicompanyproject.domain.consumable;
 
 import ca.uqac.archicompanyproject.domain.consumable.Consumable;
 import lombok.*;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Builder(builderMethodName = "consumableBuilder")
+@Builder(builderMethodName = "consumableTypeBuilder")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConsumableType {

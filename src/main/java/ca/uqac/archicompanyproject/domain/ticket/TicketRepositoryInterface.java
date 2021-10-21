@@ -6,5 +6,4 @@ import java.util.*;
 
 public interface TicketRepositoryInterface extends CrudRepository<Ticket,Integer>{
     Optional<Ticket> findByRequestDate(Date requestDate);
-    Optional<Ticket> findByConsumable(Consumable consumable);
 }

@@ -1,7 +1,7 @@
 package ca.uqac.archicompanyproject.infra.web.consumableType;
 
-import ca.uqac.archicompanyproject.domain.consumableType.ConsumableType;
-import ca.uqac.archicompanyproject.domain.consumableType.ConsumableTypeService;
+import ca.uqac.archicompanyproject.domain.consumable.ConsumableType;
+import ca.uqac.archicompanyproject.domain.consumable.ConsumableTypeService;
 import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

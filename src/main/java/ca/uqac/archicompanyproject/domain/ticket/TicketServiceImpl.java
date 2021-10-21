@@ -41,10 +41,6 @@ public class TicketServiceImpl implements TicketService {
         return this.ticketRepository.findByRequestDate(requestDate).orElse(null);
     }
 
-    public Ticket findTicketByConsumable(Consumable consumable) throws NotFoundException{
-        return this.ticketRepository.findByConsumable(consumable).orElse(null);
-    }
-
     public void deleteTicket(Ticket ticket){
         ticketRepository.delete(ticket);
     }

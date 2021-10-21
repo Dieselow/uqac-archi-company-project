@@ -10,7 +10,6 @@ public interface TicketService {
     Ticket addTicket(Ticket ticket);
     Ticket findTicketById(Integer id) throws NotFoundException;
     Ticket findTicketByDate(Date date) throws NotFoundException;
-    Ticket findTicketByConsumable(Consumable consumable)throws  NotFoundException;
     void deleteTicket(Ticket ticket);
     List<Ticket> getTickets();
 }

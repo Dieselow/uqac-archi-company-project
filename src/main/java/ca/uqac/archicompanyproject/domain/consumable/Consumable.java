@@ -1,7 +1,5 @@
 package ca.uqac.archicompanyproject.domain.consumable;
 
-import ca.uqac.archicompanyproject.domain.consumableType.ConsumableType;
-
 import ca.uqac.archicompanyproject.domain.ticket.Ticket;
 import lombok.*;
 
