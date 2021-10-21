@@ -25,6 +25,7 @@ public class TicketServiceImpl implements TicketService {
         return this.ticketRepository.save(
                 Ticket.ticketBuilder()
                         .requestDate(ticket.getRequestDate())
+                        .consumables(ticket.getConsumables())
                         .build()
         );
     }

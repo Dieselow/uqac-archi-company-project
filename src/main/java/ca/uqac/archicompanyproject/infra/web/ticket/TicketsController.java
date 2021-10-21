@@ -57,13 +57,10 @@ public class TicketsController {
     }
 
     //créer un nouveau ticket
-    @PostMapping("/update/:id")
-    @PreAuthorize("hasRole('CAREGIVER, SECRETARY')")
+    @PostMapping()
+    @PreAuthorize("hasAnyRole('CAREGIVER, SECRETARY')")
     public ResponseEntity<Ticket> createNewTicket(@RequestBody Ticket ticket) {
         try {
-            this.ticketService.findTicketByDate(ticket.getRequestDate());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        } catch (NotFoundException exception) {
             Ticket result = ticketService.addTicket(ticket);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception e) {

@@ -2,6 +2,8 @@ package ca.uqac.archicompanyproject.domain.consumable;
 
 import ca.uqac.archicompanyproject.domain.ticket.Ticket;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
