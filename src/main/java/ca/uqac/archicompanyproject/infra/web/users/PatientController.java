@@ -1,5 +1,7 @@
 package ca.uqac.archicompanyproject.infra.web.users;
 
+import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
+import ca.uqac.archicompanyproject.domain.caregiver.CaregiverService;
 import ca.uqac.archicompanyproject.domain.patient.Patient;
 import ca.uqac.archicompanyproject.domain.patient.PatientService;
 import javassist.NotFoundException;
@@ -17,11 +19,18 @@ import java.util.List;
 public class PatientController {
 
     private final PatientService patientService;
+    private final CaregiverService caregiverService;
 
     @GetMapping()
-    @PreAuthorize("hasRole('SECRETARY')")
-    public ResponseEntity<List<Patient>> getPatients() {
+    @PreAuthorize("hasAnyRole('SECRETARY','CAREGIVER')")
+    public ResponseEntity<List<Patient>> getPatients(@RequestHeader(value = "Authorization") String token) {
         try {
+            //Essai authentification médecin
+            Caregiver caregiver = caregiverService.getCaregiverFromToken(token);
+            List<Patient> patients = caregiver.getPatients();
+            return new ResponseEntity<>(patients, HttpStatus.OK);
+        } catch (NotFoundException e){
+            //Sinon on est secretaire
             List<Patient> patients = (List<Patient>) patientService.getPatients();
             return new ResponseEntity<>(patients, HttpStatus.OK);
         } catch (Exception e) {
@@ -99,4 +108,15 @@ public class PatientController {
         }
     }
 
+    @GetMapping("/view/primaryDoctor/:id")
+    @PreAuthorize("hasRole('SECRETARY')")
+    public ResponseEntity<Caregiver> getPrimaryDoctorFromPatientId(@RequestParam("id") Integer id) {
+        try {
+            Patient patient = this.patientService.findPatientById(id);
+            Caregiver caregiver = patient.getPrimaryDoctor();
+            return new ResponseEntity<>(caregiver, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

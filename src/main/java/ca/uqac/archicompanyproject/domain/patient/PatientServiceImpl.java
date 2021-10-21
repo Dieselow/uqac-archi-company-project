@@ -4,6 +4,7 @@ import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
+import ca.uqac.archicompanyproject.domain.caregiver.CaregiverService;
 import ca.uqac.archicompanyproject.domain.healthfile.HealthFile;
 import ca.uqac.archicompanyproject.domain.healthfile.HealthFileRepositoryInterface;
 import ca.uqac.archicompanyproject.security.TokenProvider;
@@ -25,6 +26,7 @@ public class PatientServiceImpl implements PatientService {
     private final PasswordEncoder bCryptEncoder;
     private final RoleRepository roleRepository;
     private final TokenProvider tokenProvider;
+    private final CaregiverService caregiverService;
 
     @Override
     public Patient savePatient(Patient patient) {
@@ -124,5 +126,19 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public Iterable<Patient> findByPrimaryDoctor(Caregiver caregiver){
         return patientRepository.findByPrimaryDoctor(caregiver);
+    }
+
+    @Override
+    public boolean checkCaregiverAccessToPatient(String token, Integer patientId) throws NotFoundException {
+        Patient patient = this.findPatientById(patientId);
+        Caregiver caregiver = caregiverService.getCaregiverFromToken(token);
+        return caregiver.getPatients().stream().anyMatch(patientDocteur -> patientDocteur.getID().equals(patient.getID()));
+    }
+    //Pas de check sur update de l'adresse mail !!!
+
+    @Override
+    public boolean checkCaregiverAccessToHealthfile(String token, Integer healthFileId) throws NotFoundException {
+        HealthFile healthFile = this.findHealthfileById(healthFileId);
+        return this.checkCaregiverAccessToPatient(token, healthFile.getPatient().getID());
     }
 }

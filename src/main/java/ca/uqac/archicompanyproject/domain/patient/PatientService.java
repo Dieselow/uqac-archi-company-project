@@ -20,5 +20,6 @@ public interface PatientService {
     HealthFile saveHealthFile(HealthFile healthFile);
     void deleteHealthFile(Integer healthFileId) throws NotFoundException;
 
-
+    boolean checkCaregiverAccessToPatient(String token, Integer patientId) throws NotFoundException;
+    boolean checkCaregiverAccessToHealthfile(String token, Integer healthFileId) throws NotFoundException;
 }

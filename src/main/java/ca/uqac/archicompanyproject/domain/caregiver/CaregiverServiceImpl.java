@@ -3,6 +3,7 @@ package ca.uqac.archicompanyproject.domain.caregiver;
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
+import ca.uqac.archicompanyproject.security.TokenProvider;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,6 +22,7 @@ public class CaregiverServiceImpl implements  CaregiverService{
     private final CaregiverRepositoryInterface caregiverRepository;
     private final PasswordEncoder bCryptEncoder;
     private final RoleRepository roleRepository;
+    private final TokenProvider tokenProvider;
 
     @Override
     public Caregiver saveCaregiver(Caregiver caregiver){
@@ -59,6 +61,12 @@ public class CaregiverServiceImpl implements  CaregiverService{
             return caregiver.get();
         }
         throw new NotFoundException("Caregiver with email:" + email + " not found");
+    }
+
+    @Override
+    public Caregiver getCaregiverFromToken(String token) throws NotFoundException {
+        token = token.replace("Bearer ","");
+        return findCaregiverByEmail(this.tokenProvider.getUsernameFromToken(token));
     }
 
     @Override

@@ -11,6 +11,7 @@ public interface CaregiverService {
     void deleteCaregiver(Caregiver caregiver);
     Caregiver findCaregiverById(Integer id) throws NotFoundException;
     Caregiver findCaregiverByEmail(String email) throws  NotFoundException;
+    Caregiver getCaregiverFromToken(String token) throws NotFoundException;
     List<Caregiver> getCaregivers(Specification specification);
     List<Caregiver> getCaregivers();
 }
