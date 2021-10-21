@@ -1,6 +1,7 @@
 package ca.uqac.archicompanyproject.domain.consumable;
 
 import ca.uqac.archicompanyproject.domain.consumable.Consumable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class ConsumableType {
     Integer ID;
     String name;
     String brand;
+    @JsonIgnore
     @OneToMany(targetEntity= Consumable.class,
             mappedBy="consumableType",
             cascade=CascadeType.ALL,

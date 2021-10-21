@@ -1,9 +1,7 @@
 package ca.uqac.archicompanyproject.domain.consumable;
 
 import ca.uqac.archicompanyproject.domain.ticket.Ticket;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,12 +20,8 @@ public class Consumable {
     Integer ID;
     Integer quantity;
     Integer threshold;
-    @JsonBackReference
     @ManyToOne()
     @JoinColumn(name="consumableType_id",
             referencedColumnName = "id")
      ConsumableType consumableType;
-
-    @ManyToMany(mappedBy = "consumables")
-    private Set<Ticket> tickets;
 }

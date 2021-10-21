@@ -2,7 +2,9 @@ package ca.uqac.archicompanyproject.domain.ticket;
 
 import ca.uqac.archicompanyproject.domain.consumable.Consumable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,6 +29,5 @@ public class Ticket {
             joinColumns = @JoinColumn (name = "ticket_id"),
             inverseJoinColumns = @JoinColumn(name = "consumable_id")
     )
-    @JsonBackReference
     Set<Consumable> consumables;
 }
