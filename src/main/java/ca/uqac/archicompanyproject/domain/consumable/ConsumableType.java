@@ -1,6 +1,7 @@
 package ca.uqac.archicompanyproject.domain.consumable;
 
 import ca.uqac.archicompanyproject.domain.consumable.Consumable;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;

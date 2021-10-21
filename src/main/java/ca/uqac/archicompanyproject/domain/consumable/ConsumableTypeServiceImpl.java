@@ -33,7 +33,11 @@ public class ConsumableTypeServiceImpl implements ConsumableTypeService {
     }
 
     public ConsumableType findConsumableTypeByName(String name) throws NotFoundException{
-        return this.consumableTypeRepository.findByName(name).orElse(null);
+        Optional<ConsumableType> consumableType = this.consumableTypeRepository.findByName(name);
+        if (consumableType.isPresent()){
+            return consumableType.get();
+        }
+        throw new NotFoundException("Consumable with name " + name + " not found");
     }
 
     public void deleteConsumableType(ConsumableType consumableType){

@@ -44,7 +44,11 @@ public class ConsumableServiceImpl implements ConsumableService {
 
     @Override
     public Consumable findConsumableByConsumableType(ConsumableType consumableType) throws NotFoundException{
-        return this.consumableRepository.findByConsumableType(consumableType).orElse(null);
+        Optional<Consumable> consumable = this.consumableRepository.findByConsumableType(consumableType);
+        if (consumable.isPresent()){
+            return consumable.get();
+        }
+        throw new NotFoundException("Consomable not found");
     }
 
     @Override

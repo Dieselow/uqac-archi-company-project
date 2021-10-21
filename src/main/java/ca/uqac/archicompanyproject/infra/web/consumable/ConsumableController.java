@@ -52,8 +52,8 @@ public class ConsumableController {
         }
     }
 
-    @PostMapping("")
-    @PreAuthorize("hasRole('CAREGIVER, SECRETARY')")
+    @PostMapping()
+    @PreAuthorize("hasAnyRole('CAREGIVER, SECRETARY')")
     public ResponseEntity<Consumable> createNewConsumable(@RequestBody Consumable consumable) {
         try {
             this.consumableService.findConsumableByConsumableType(consumable.getConsumableType());
@@ -67,7 +67,7 @@ public class ConsumableController {
     }
 
     @DeleteMapping("/delete/:id")
-    @PreAuthorize("hasRole('CAREGIVER, SECRETARY')")
+    @PreAuthorize("hasAnyRole('CAREGIVER, SECRETARY')")
     public ResponseEntity<String> deleteConsumable(@RequestParam("id") Integer id) {
         try {
             Consumable consumable = Consumable.consumableBuilder().ID(id).build();
