@@ -1,6 +1,6 @@
 package ca.uqac.archicompanyproject.domain.consumable;
 
-import ca.uqac.archicompanyproject.domain.ConsumableType.ConsumableType;
+import ca.uqac.archicompanyproject.domain.consumableType.ConsumableType;
 
 import ca.uqac.archicompanyproject.domain.ticket.Ticket;
 import lombok.*;
@@ -28,6 +28,4 @@ public class Consumable {
 
     @ManyToMany(mappedBy = "consumables")
     private Set<Ticket> tickets;
-
-
 }
