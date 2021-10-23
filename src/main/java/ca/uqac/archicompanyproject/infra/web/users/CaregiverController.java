@@ -2,6 +2,7 @@ package ca.uqac.archicompanyproject.infra.web.users;
 
 import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
 import ca.uqac.archicompanyproject.domain.caregiver.CaregiverService;
+import ca.uqac.archicompanyproject.domain.patient.Patient;
 import ca.uqac.archicompanyproject.domain.search.CriteriaParser;
 import ca.uqac.archicompanyproject.domain.search.GenericSpecification;
 import ca.uqac.archicompanyproject.domain.search.GenericSpecificationsBuilder;
@@ -24,9 +25,9 @@ public class CaregiverController {
 
     @GetMapping()
     @PreAuthorize("hasRole('SECRETARY')")
-    public ResponseEntity<List<Caregiver>> getCaregivers(@RequestParam(value = "search",required = false) String search) {
+    public ResponseEntity<List<Caregiver>> getCaregivers(@RequestParam(value = "search", required = false) String search) {
         try {
-            if (search == null){
+            if (search == null) {
                 List<Caregiver> caregivers = caregiverService.getCaregivers();
                 return new ResponseEntity<>(caregivers, HttpStatus.OK);
             }
@@ -82,6 +83,33 @@ public class CaregiverController {
             Caregiver caregiver = Caregiver.builder().ID(id).build();
             caregiverService.deleteCaregiver(caregiver);
             return new ResponseEntity<>("Success", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/view/patients")
+    @PreAuthorize("hasRole('CAREGIVER')")
+    public ResponseEntity<List<Patient>> getCaregiversPatients(@RequestHeader(value = "Authorization") String token) {
+        try {
+            Caregiver caregiver = this.caregiverService.getCaregiverFromToken(token);
+            return new ResponseEntity<>(caregiver.getPatients(), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @GetMapping("/view/details")
+    @PreAuthorize("hasRole('CAREGIVER')")
+    public ResponseEntity<Caregiver> getCaregiverDetails(@RequestHeader(value = "Authorization") String token) {
+        try {
+            Caregiver patient = this.caregiverService.getCaregiverFromToken(token);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
