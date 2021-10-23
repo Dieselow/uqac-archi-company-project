@@ -3,6 +3,8 @@ package ca.uqac.archicompanyproject.domain.secretary;
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
+import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
+import ca.uqac.archicompanyproject.security.TokenProvider;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import java.util.Set;
 public class SecretaryServiceImpl implements  SecretaryService{
 
     private final SecretaryRepositoryInterface secretaryRepository;
+    private final TokenProvider tokenProvider;
     private final PasswordEncoder bCryptEncoder;
     private final RoleRepository roleRepository;
 
@@ -59,6 +62,12 @@ public class SecretaryServiceImpl implements  SecretaryService{
             return secretary.get();
         }
         throw new NotFoundException("Secretary with email:" + email + " not found");
+    }
+
+    @Override
+    public Secretary getSecretaryFromToken(String token) throws NotFoundException {
+        token = token.replace("Bearer ","");
+        return findSecretaryByEmail(this.tokenProvider.getUsernameFromToken(token));
     }
 
     @Override

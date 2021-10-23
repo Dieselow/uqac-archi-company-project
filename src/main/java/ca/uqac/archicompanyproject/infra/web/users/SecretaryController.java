@@ -71,6 +71,19 @@ public class SecretaryController {
         }
     }
 
+    @GetMapping("/view/details")
+    @PreAuthorize("hasRole('SECRETARY')")
+    public ResponseEntity<Secretary> getCaregiverDetails(@RequestHeader(value = "Authorization") String token) {
+        try {
+            Secretary secretary = this.secretaryService.getSecretaryFromToken(token);
+            return new ResponseEntity<>(secretary, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/delete/:id")
     @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<String> deleteSecretary(@RequestParam("id") Integer id) {
