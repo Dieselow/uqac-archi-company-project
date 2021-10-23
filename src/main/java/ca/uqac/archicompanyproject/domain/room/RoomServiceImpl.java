@@ -4,12 +4,11 @@ import ca.uqac.archicompanyproject.domain.equipement.Equipment;
 import ca.uqac.archicompanyproject.domain.equipement.EquipmentRepositoryInterface;
 import ca.uqac.archicompanyproject.domain.equipement.EquipmentType;
 import ca.uqac.archicompanyproject.domain.equipement.EquipmentTypeRepositoryInterface;
-import ca.uqac.archicompanyproject.domain.patient.Patient;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,6 +42,11 @@ public class RoomServiceImpl implements  RoomService {
             return room.get();
         }
         throw new NotFoundException("Room with name " + name + " not found");
+    }
+
+    @Override
+    public List<Room> findByNameContaining(String name){
+        return (List<Room>) roomRepository.findByNameContaining(name);
     }
 
     @Override

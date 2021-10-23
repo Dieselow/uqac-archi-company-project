@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface RoomRepositoryInterface extends CrudRepository<Room, Integer> {
     Optional<Room> findByName(String name);
+    Iterable<Room> findByNameContaining(String name);
 }

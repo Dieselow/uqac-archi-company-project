@@ -46,4 +46,14 @@ public class User {
             inverseJoinColumns = {
                     @JoinColumn(name = "role_id") })
     private Set<Role> roles;
+
+    public String getRoot(){return null;}
+
+    @Override
+    public boolean equals(Object o){
+        if (o instanceof User){
+            return this.getID().equals(((User) o).getID());
+        }
+       return false;
+    }
 }

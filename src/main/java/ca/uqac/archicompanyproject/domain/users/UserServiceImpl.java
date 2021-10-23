@@ -13,7 +13,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -62,6 +66,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return user.get();
         }
         throw new NotFoundException("User with id" + id + "not found");
+    }
+
+    @Override
+    public List<User> getUsersWithNameContaining(String name){
+        //En vrai y'a surement moyen de le faire avec tes criterias Louis mais bon euh pas le  temps
+        List<User> firstname = (List<User>) userRepository.findByFirstNameContains(name);
+        List<User> result = (List<User>) userRepository.findByLastNameContains(name);
+
+        result.addAll(firstname);
+        return result.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
