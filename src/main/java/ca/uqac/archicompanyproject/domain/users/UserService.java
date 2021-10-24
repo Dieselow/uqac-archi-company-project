@@ -10,6 +10,7 @@ public interface UserService {
     User findUserByEmail(String email) throws NotFoundException;
     User findUserById(Integer id) throws NotFoundException;
     List<User> getUsersWithNameContaining(String name);
+    boolean checkEmailAlreadyExists(User user);
     List<User> getUsers(Specification specification);
     List<User> getUsers();
 }

@@ -60,7 +60,7 @@ public class RoomController {
     public ResponseEntity<Room> addEquipment(@RequestParam("id") Integer roomId, @RequestBody() Equipment equipment) {
         try {
             Room room = roomService.addEquipment(roomId, equipment);
-            return new ResponseEntity<>(room, HttpStatus.OK);
+            return new ResponseEntity<>(room, HttpStatus.CREATED);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {

@@ -6,6 +6,7 @@ import ca.uqac.archicompanyproject.domain.patient.Patient;
 import ca.uqac.archicompanyproject.domain.search.CriteriaParser;
 import ca.uqac.archicompanyproject.domain.search.GenericSpecification;
 import ca.uqac.archicompanyproject.domain.search.GenericSpecificationsBuilder;
+import ca.uqac.archicompanyproject.domain.users.UserService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,6 +23,7 @@ import java.util.List;
 public class CaregiverController {
 
     private final CaregiverService caregiverService;
+    private final UserService userService;
 
     @GetMapping()
     @PreAuthorize("hasRole('SECRETARY')")
@@ -54,11 +56,11 @@ public class CaregiverController {
     @PostMapping("/auth/register")
     public ResponseEntity<Caregiver> createNewCaregiver(@RequestBody Caregiver caregiver) {
         try {
-            this.caregiverService.findCaregiverByEmail(caregiver.getEmail());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        } catch (NotFoundException notFoundException) {
+            if (userService.checkEmailAlreadyExists(caregiver)){
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
             Caregiver result = caregiverService.addCaregiver(caregiver);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -69,6 +71,9 @@ public class CaregiverController {
     public ResponseEntity<Caregiver> updateCaregiver(@RequestParam("id") Integer id, @RequestBody Caregiver caregiver) {
         try {
             caregiver.setID(id);
+            if (userService.checkEmailAlreadyExists(caregiver)){
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
             Caregiver result = caregiverService.saveCaregiver(caregiver);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {

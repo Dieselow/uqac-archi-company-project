@@ -6,6 +6,8 @@ import ca.uqac.archicompanyproject.domain.authentication.Roles;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,8 +57,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+    public User findUserByEmail(String email) throws NotFoundException {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        throw new NotFoundException("User with email "+ email + " not found");
     }
 
     @Override
@@ -76,6 +82,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         result.addAll(firstname);
         return result.stream().distinct().collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean checkEmailAlreadyExists(User user){
+        try {
+            //On check qu'on a pas update l'email vers un existant
+            User userWithEmail = this.findUserByEmail(user.getEmail());
+            if (userWithEmail.getID() != user.getID()){
+                return true;
+            }
+            return false;
+        } catch (Exception ex) {
+            //Il n'existe pas de user avec cet email, on continue
+            return false;
+        }
     }
 
     @Override
