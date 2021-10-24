@@ -3,6 +3,8 @@ package ca.uqac.archicompanyproject.domain.users;
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.authentication.RoleRepository;
 import ca.uqac.archicompanyproject.domain.authentication.Roles;
+import ca.uqac.archicompanyproject.domain.secretary.Secretary;
+import ca.uqac.archicompanyproject.security.TokenProvider;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     //Other
     private final RoleRepository roleRepository;
     private final PasswordEncoder bCryptEncoder;
+    private final TokenProvider tokenProvider;
 
     @Override
     public User addUser(User user) {
@@ -72,6 +75,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return user.get();
         }
         throw new NotFoundException("User with id" + id + "not found");
+    }
+
+    @Override
+    public String getUserTypeFromToken(String token) throws NotFoundException{
+        token = token.replace("Bearer ","");
+        return findUserByEmail(this.tokenProvider.getUsernameFromToken(token)).getClass().getSimpleName();
     }
 
     @Override
