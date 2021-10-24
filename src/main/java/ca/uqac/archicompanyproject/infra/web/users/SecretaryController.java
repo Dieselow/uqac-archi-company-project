@@ -46,6 +46,7 @@ public class SecretaryController {
         }
     }
 
+    //Ici faudra mettre la sécu
     @PostMapping("/auth/register")
     public ResponseEntity<Secretary> createNewSecretary(@RequestBody Secretary secretary) {
         try {
