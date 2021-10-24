@@ -2,18 +2,15 @@ package ca.uqac.archicompanyproject.domain.patient;
 
 import ca.uqac.archicompanyproject.domain.authentication.Role;
 import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
+import ca.uqac.archicompanyproject.domain.consts.RootConsts;
+import ca.uqac.archicompanyproject.domain.healthfile.HealthFile;
 import ca.uqac.archicompanyproject.domain.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import ca.uqac.archicompanyproject.domain.healthfile.HealthFile;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -40,4 +37,13 @@ public class Patient extends User {
         this.primaryDoctor = primaryDoctor;
     }
 
+    @Override
+    public String getRoot(){
+        return RootConsts.ROOT_API + RootConsts.ROOT_VIEW_PATIENT + getID().toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

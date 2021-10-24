@@ -2,13 +2,15 @@ package ca.uqac.archicompanyproject.domain.room;
 
 import ca.uqac.archicompanyproject.domain.equipement.Equipment;
 import ca.uqac.archicompanyproject.domain.equipement.EquipmentType;
-import ca.uqac.archicompanyproject.domain.patient.Patient;
 import javassist.NotFoundException;
+
+import java.util.List;
 
 public interface RoomService {
     Room saveRoom(Room room);
     Room findRoomById(Integer id) throws NotFoundException;
     Room findRoomByName(String name) throws NotFoundException;
+    List<Room> findByNameContaining(String name);
     Iterable<Room> getRooms();
 
     Room addEquipment(Integer roomId, Equipment equipment) throws NotFoundException;

@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface UserRepositoryInterface extends CrudRepository<User,Integer>, JpaSpecificationExecutor<User> {
     Optional<User> findByEmail(String email);
+    Iterable<User> findByFirstNameContains(String name);
+    Iterable<User> findByLastNameContains(String name);
 }

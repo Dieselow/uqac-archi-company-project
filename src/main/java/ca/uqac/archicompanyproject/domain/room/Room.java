@@ -1,5 +1,6 @@
 package ca.uqac.archicompanyproject.domain.room;
 
+import ca.uqac.archicompanyproject.domain.consts.RootConsts;
 import ca.uqac.archicompanyproject.domain.equipement.Equipment;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,8 @@ public class Room {
     @OneToMany(cascade= CascadeType.ALL, mappedBy = "room")
     @JsonManagedReference
     List<Equipment> equipments = new ArrayList<Equipment>();
+
+    public String getRoot(){
+        return RootConsts.ROOT_API + RootConsts.ROOT_VIEW_ROOM + getID();
+    }
 }

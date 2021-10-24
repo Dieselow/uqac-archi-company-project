@@ -2,7 +2,6 @@ package ca.uqac.archicompanyproject.infra.web.room;
 
 import ca.uqac.archicompanyproject.domain.equipement.Equipment;
 import ca.uqac.archicompanyproject.domain.equipement.EquipmentType;
-import ca.uqac.archicompanyproject.domain.patient.Patient;
 import ca.uqac.archicompanyproject.domain.room.Room;
 import ca.uqac.archicompanyproject.domain.room.RoomService;
 import javassist.NotFoundException;
@@ -27,6 +26,19 @@ public class RoomController {
         try {
             List<Room> rooms = (List<Room>) roomService.getRooms();
             return new ResponseEntity<>(rooms, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/view/:id")
+    @PreAuthorize("hasRole('SECRETARY')")
+    public ResponseEntity<Room> getRoomById(@RequestParam("id") Integer id) {
+        try {
+            Room room = roomService.findRoomById(id);
+            return new ResponseEntity<>(room, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
