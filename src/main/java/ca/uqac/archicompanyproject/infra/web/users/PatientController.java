@@ -4,6 +4,8 @@ import ca.uqac.archicompanyproject.domain.caregiver.Caregiver;
 import ca.uqac.archicompanyproject.domain.caregiver.CaregiverService;
 import ca.uqac.archicompanyproject.domain.patient.Patient;
 import ca.uqac.archicompanyproject.domain.patient.PatientService;
+import ca.uqac.archicompanyproject.domain.users.User;
+import ca.uqac.archicompanyproject.domain.users.UserService;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 public class PatientController {
 
     private final PatientService patientService;
+    private final UserService userService;
     private final CaregiverService caregiverService;
 
     @GetMapping()
@@ -41,11 +44,11 @@ public class PatientController {
     @PostMapping("/auth/register")
     public ResponseEntity<Patient> createNewPatient(@RequestBody Patient patient) {
         try {
-            this.patientService.findPatientByEmail(patient.getEmail());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        } catch (NotFoundException notFoundException) {
+            if (userService.checkEmailAlreadyExists(patient)){
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
             Patient result = patientService.addPatient(patient);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -85,10 +88,17 @@ public class PatientController {
             if (currentPatient.getID() != id) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
+
+            if (userService.checkEmailAlreadyExists(patient)){
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
             patient.setID(id);
             Patient result = patientService.savePatient(patient);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (NotFoundException e) {
+            if (userService.checkEmailAlreadyExists(patient)){
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
             Patient result = patientService.savePatient(patient);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
@@ -98,12 +108,13 @@ public class PatientController {
 
     @DeleteMapping("/delete/:id")
     @PreAuthorize("hasRole('SECRETARY')")
-    public ResponseEntity<String> deletePatient(@RequestParam("id") Integer id) {
+    public ResponseEntity<String> deletePatient(@RequestParam("id") Integer patientId) {
         try {
-            Patient patient = Patient.builder().ID(id).build();
-            patientService.deletePatient(patient);
+            patientService.deletePatient(patientId);
             return new ResponseEntity<>("Success", HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (NotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

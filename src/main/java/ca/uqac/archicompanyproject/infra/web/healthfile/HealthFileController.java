@@ -27,7 +27,7 @@ public class HealthFileController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             Patient patient = patientService.addHealthFile(patientId, healthFile);
-            return new ResponseEntity<>(patient, HttpStatus.OK);
+            return new ResponseEntity<>(patient, HttpStatus.CREATED);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
