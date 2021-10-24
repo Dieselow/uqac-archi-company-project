@@ -10,6 +10,7 @@ import ca.uqac.archicompanyproject.domain.healthfile.HealthFileRepositoryInterfa
 import ca.uqac.archicompanyproject.security.TokenProvider;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +50,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void deletePatient(Patient patient) {
+    public void deletePatient(Integer patientId) throws NotFoundException {
+        Patient patient = this.findPatientById(patientId);
+        if (patient.getHealthFile() != null){
+            this.deleteHealthFile(patient.getHealthFile().getID());
+        }
         patientRepository.delete(patient);
     }
 

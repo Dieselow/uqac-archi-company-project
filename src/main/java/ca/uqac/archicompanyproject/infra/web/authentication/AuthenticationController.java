@@ -45,16 +45,4 @@ public class AuthenticationController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @PostMapping("/register")
-    public ResponseEntity<User> insertUser(@RequestBody User user) {
-        User _userExist = null;
-        _userExist = userService.findUserByEmail(user.getEmail());
-        if (_userExist == null) {
-            User _user = userService.addUser(user);
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
-        }
-    }
 }

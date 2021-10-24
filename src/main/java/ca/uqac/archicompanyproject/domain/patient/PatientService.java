@@ -8,7 +8,7 @@ public interface PatientService {
     Patient savePatient(Patient patient);
     Patient addPatient(Patient patient);
     Patient getPatientFromToken(String token) throws NotFoundException;
-    void deletePatient(Patient patient);
+    void deletePatient(Integer patientId) throws NotFoundException;
     Patient findPatientById(Integer id) throws NotFoundException;
     Patient findPatientByEmail(String email) throws  NotFoundException;
     Iterable<Patient> getPatients();
