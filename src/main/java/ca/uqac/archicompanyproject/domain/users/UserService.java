@@ -9,6 +9,7 @@ public interface UserService {
     User addUser(User user);
     User findUserByEmail(String email) throws NotFoundException;
     User findUserById(Integer id) throws NotFoundException;
+    String getUserTypeFromToken(String token) throws NotFoundException;
     List<User> getUsersWithNameContaining(String name);
     boolean checkEmailAlreadyExists(User user);
     List<User> getUsers(Specification specification);

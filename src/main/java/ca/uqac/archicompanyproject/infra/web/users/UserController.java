@@ -11,21 +11,19 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/users")
-@PreAuthorize("hasRole('SECRETARY')")
+
 public class UserController {
     private final UserService userService;
 
     @GetMapping()
+    @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<List<User>> getUsers(@RequestParam(value = "search",required = false) String search) {
         try {
             if (search == null){
@@ -39,7 +37,23 @@ public class UserController {
         }
     }
 
+    @GetMapping("/get/:token")
+    public ResponseEntity<String> getUserTypeFromToken(@RequestHeader(value = "Authorization", required = false) String token) {
+        try {
+            if (token != null) {
+                String userType = userService.getUserTypeFromToken(token);
+                return new ResponseEntity<>(userType, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("", HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/view/:id")
+    @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<User> getUserById(@RequestParam("id") Integer id) {
         try {
             User result = this.userService.findUserById(id);
@@ -52,6 +66,7 @@ public class UserController {
     }
 
     @GetMapping("email")
+    @PreAuthorize("hasRole('SECRETARY')")
     public ResponseEntity<User> getUserByEmail(@RequestParam("email") String email) {
         try {
             User user = userService.findUserByEmail(email);
