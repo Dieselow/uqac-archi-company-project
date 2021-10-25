@@ -27,6 +27,6 @@ public class Room {
     List<Equipment> equipments = new ArrayList<Equipment>();
 
     public String getRoot(){
-        return RootConsts.ROOT_API + RootConsts.ROOT_VIEW_ROOM + getID();
+        return RootConsts.ROOT_VIEW_FRONT_ROOM + getID().toString() + "&root=" + RootConsts.ROOT_API + RootConsts.ROOT_VIEW_ROOM + getID().toString();
     }
 }

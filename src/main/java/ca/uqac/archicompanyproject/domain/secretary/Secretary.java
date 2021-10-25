@@ -24,6 +24,6 @@ public class Secretary extends Employee {
 
     @Override
     public String getRoot(){
-        return RootConsts.ROOT_API + RootConsts.ROOT_VIEW_SECRETARY + getID().toString();
+        return RootConsts.ROOT_VIEW_FRONT_SECRETARY + getID().toString() + "&root=" + RootConsts.ROOT_API + RootConsts.ROOT_VIEW_SECRETARY + getID().toString();
     }
 }

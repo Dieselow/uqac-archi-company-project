@@ -34,7 +34,7 @@ public class Caregiver extends Employee {
 
     @Override
     public String getRoot(){
-        return RootConsts.ROOT_API + RootConsts.ROOT_VIEW_CAREGIVER + getID().toString();
+        return RootConsts.ROOT_VIEW_FRONT_CAREGIVER + getID().toString() + "&root=" + RootConsts.ROOT_API + RootConsts.ROOT_VIEW_CAREGIVER + getID().toString();
     }
 
 }

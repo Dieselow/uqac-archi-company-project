@@ -39,7 +39,7 @@ public class Patient extends User {
 
     @Override
     public String getRoot(){
-        return RootConsts.ROOT_API + RootConsts.ROOT_VIEW_PATIENT + getID().toString();
+        return RootConsts.ROOT_VIEW_FRONT_PATIENT + getID().toString() + "&root=" + RootConsts.ROOT_API + RootConsts.ROOT_VIEW_PATIENT + getID().toString();
     }
 
     @Override

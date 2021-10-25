@@ -55,13 +55,24 @@ public class PatientController {
     }
 
     @GetMapping("/view/:id")
-    @PreAuthorize("hasRole('SECRETARY')")
-    public ResponseEntity<Patient> getPatient(@RequestParam("id") Integer id) {
+    @PreAuthorize("hasAnyRole('SECRETARY','CAREGIVER')")
+    public ResponseEntity<Patient> getPatient(@RequestHeader(value="Authorization") String token,@RequestParam("id") Integer id) {
         try {
-            Patient result = this.patientService.findPatientById(id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            //Essai authentification médecin
+            Caregiver caregiver = caregiverService.getCaregiverFromToken(token);
+            Patient patient = patientService.findPatientById(id);
+            if (patient.getPrimaryDoctor() != null && patient.getPrimaryDoctor().getID().equals(caregiver.getID())){
+                return new ResponseEntity<>(patient, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } catch (NotFoundException e){
+            //Sinon on est secretaire
+            try {
+                Patient patient = patientService.findPatientById(id);
+                return new ResponseEntity<>(patient, HttpStatus.OK);
+            } catch (NotFoundException ex) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
